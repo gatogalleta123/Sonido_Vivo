@@ -1,3 +1,14 @@
+#Archivos que SI CORRESPONDEN A IGNORAR EN LA EV 2
+# Dependencias (NUNCA SUBIR)
+*.node\_modules/
+# Archivos de compilación y temporales 
+dist/ build/\
+*.log
+# Variables de entorno
+*.env
+*.env.local
+
+#Estos archivos son para ignorar cuando se implemente el backend en la evaluacion 3 (si es que no se cambia el caso)
 # Compiled class file
 *.class
 

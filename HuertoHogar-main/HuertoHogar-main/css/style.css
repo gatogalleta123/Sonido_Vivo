@@ -1,0 +1,182 @@
+body {
+    /* Ruta de la imagen o enlace web */
+    background-image: url('../img/FondoPapel.jpg');
+    
+    /* Evita que la imagen se repita */
+    background-repeat: no-repeat;
+    
+    /* Ajusta la imagen para que cubra toda la pantalla */
+    background-size: cover;
+    
+    /* Centra la imagen en la pantalla */
+    background-position: center;
+    
+    /* Mantiene la imagen fija al deslizar la página */
+    background-attachment: fixed;
+    
+    /* Elimina los márgenes predeterminados del navegador */
+    margin: 0;
+    
+    /* Asegura que el alto ocupe toda la ventana */
+    height: 100vh;
+
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+header{
+    background-color: var(--verde-esmeralda);
+}
+
+footer {
+    background-color: var(--verde-esmeralda);
+}
+
+footer.py-5 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+}
+
+footer > .row {
+    margin-right: 20%;
+    margin-left: 20%;
+}
+
+footer .bg-blanco {
+    border-radius: 12px;
+}
+
+footer > .d-flex {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    margin-top: 1rem !important;
+    margin-bottom: 0 !important;
+}
+
+.logo-prov{
+    color: black;
+    margin-right: 40px;
+}
+
+
+h1{
+    font-family: 'Playfair Display', serif;
+    color: var(--marron-claro);
+}
+
+h2{
+    font-family: 'Montserrat', sans-serif;
+    color: var(--marron-claro);
+}
+
+h3{
+    font-family: 'Montserrat', sans-serif;
+    color: var(--gris-oscuro);
+}
+h4{
+    font-family: 'Montserrat', sans-serif;
+    color: var(--gris-oscuro);
+}
+h5{
+    font-family: 'Montserrat', sans-serif;
+    color: var(--gris-claro);
+}
+h6{
+    font-family: 'Montserrat', sans-serif;
+}
+p{
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+.card-img-top{
+    height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.hero-image {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 12%;
+}
+
+.hero-copy {
+    background-color: #ffffff;
+    border-radius: 12px;
+}
+
+
+.blog-content {
+    flex: 0 0 60%;
+    max-width: 60%;
+}
+
+.blog-image {
+    flex: 0 0 40%;
+    max-width: 40%;
+    align-self: stretch;
+}
+
+.blog-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    object-fit: cover;
+}
+
+.product-card-grid {
+    margin-inline: 10%;
+}
+
+.product-card-grid .card {
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.product-card-grid .card h4 {
+    font-weight: 700;
+}
+
+.product-card-grid .card-footer {
+    text-align: center;
+}
+
+@media (max-width: 576px) {
+    .hero-image {
+        height: 280px;
+    }
+
+    .product-card-grid {
+        margin-inline: 5%;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .blog-content,
+    .blog-image {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .blog-image img {
+        height: 320px;
+        min-height: 0;
+    }
+}
+
+.bg-blanco{
+    background-color: var(--blanco-suave);
+}
+:root{
+    --blanco-suave: #F7F7F7;
+    --verde-esmeralda:  #2E8B57;
+    --amarillo-mostaza: #FFD700;
+    --marron-claro: #8B4513;
+    --gris-oscuro: #333333;
+    --gris-medio: #666666;
+}
+
