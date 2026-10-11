@@ -1,35 +1,47 @@
-#Archivos que SI CORRESPONDEN A IGNORAR EN LA EV 2
-# Dependencias (NUNCA SUBIR)
-*.node\_modules/
-# Archivos de compilación y temporales 
-dist/ build/\
+# Dependencias de Node.js
+node_modules/
+
+# Archivos de compilacion
+dist/
+build/
+dist-ssr/
+
+# Registros y archivos temporales
 *.log
+logs/
+
 # Variables de entorno
-*.env
-*.env.local
+.env
+.env.*
+!.env.example
+
+# Editores
+.vscode/
+.idea/
+
+# Archivos del sistema
+.DS_Store
 
 #Estos archivos son para ignorar cuando se implemente el backend en la evaluacion 3 (si es que no se cambia el caso)
-# Compiled class file
+
+# Archivos compilados de Java
 *.class
 
-# Log file
-*.log
-
-# BlueJ files
+# Archivos temporales de Java
 *.ctxt
-
-# Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Paquetes Java
 *.jar
 *.war
 *.nar
 *.ear
+
+# Archivos comprimidos
 *.zip
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Registros de errores de la JVM
 hs_err_pid*
 replay_pid*

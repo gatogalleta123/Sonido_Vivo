@@ -1,0 +1,39 @@
+:root {
+    --color-fondo-oscuro: #10002b;
+    --color-purpura-profundo: #240046;
+    --color-purpura-medio: #3c096c;
+    --color-primario: #5a189a;
+    --color-primario-vibrante: #7b2cbf;
+    --color-accent: #9d4edd;
+    --color-hover-claro: #c77dff;
+    --color-fondo-suave: #e0aaff;
+    --color-texto-oscuro: #1f2937;
+    --color-blanco: #ffffff;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: var(--color-texto-oscuro);
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+}
+
+.site-header {
+    background-color: var(--color-fondo-oscuro);
+    color: var(--color-blanco);
+}
+
+.site-nav {
+    background-color: var(--color-purpura-profundo);
+}
+
+.btn-primary-custom {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    border: none;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--color-primario-vibrante);
+    color: var(--color-blanco);
+}
