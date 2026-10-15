@@ -1,70 +1,49 @@
 import { Link } from "react-router-dom";
+import ProductoCard from "../components/ProductoCard.jsx";
+import { obtenerProductos } from "../data/productos.js";
 
 export default function Inicio() {
-    // Categorías destacadas para la vista principal
+    const productosDestacados = obtenerProductos().slice(0, 4);
+
     const categoriasDestacadas = [
         {
-            id: "guitarras",
-            nombre: "Guitarras y Bajos",
+            id: "acusticas",
+            nombre: "Guitarras Acústicas",
             icono: "🎸",
-            descripcion: "Guitarras eléctricas, acústicas, electroacústicas y bajos profesionales.",
+            descripcion: "Modelos electroacústicos, folk y clásicos de sonido cálido.",
+            linkCategoria: "Guitarras Acústicas",
+        },
+        {
+            id: "electricas",
+            nombre: "Guitarras Eléctricas",
+            icono: "⚡",
+            descripcion: "Modelos de marcas líderes para rock, jazz y metal.",
+            linkCategoria: "Guitarras Eléctricas",
+        },
+        {
+            id: "bajos",
+            nombre: "Bajos Eléctricos",
+            icono: "🎸",
+            descripcion: "Bajos de 4 y 5 cuerdas con precisión de frecuencias graves.",
+            linkCategoria: "Bajos Eléctricos",
         },
         {
             id: "teclados",
-            nombre: "Teclados y Sintetizadores",
+            nombre: "Teclados y Pianos",
             icono: "🎹",
-            descripcion: "Pianos digitales, controladores MIDI y sintetizadores para escenario.",
-        },
-        {
-            id: "baterias",
-            nombre: "Baterías y Percusión",
-            icono: "🥁",
-            descripcion: "Baterías acústicas, electrónicas, platillos y repuestos.",
-        },
-        {
-            id: "audio",
-            nombre: "Audio Profesional",
-            icono: "🎙️",
-            descripcion: "Micrófonos de estudio, monitores, interfaces y consolas de sonido.",
-        },
-    ];
-
-    // Vista previa de productos destacados
-    const productosDestacados = [
-        {
-            id: 1,
-            nombre: "Guitarra Eléctrica Fender Stratocaster",
-            precio: 890000,
-            categoria: "Guitarras",
-        },
-        {
-            id: 2,
-            nombre: "Teclado Sintetizador Roland JUNO-DS",
-            precio: 650000,
-            categoria: "Teclados",
-        },
-        {
-            id: 3,
-            nombre: "Batería Electrónica Alesis Nitro Max",
-            precio: 490000,
-            categoria: "Baterías",
-        },
-        {
-            id: 4,
-            nombre: "Micrófono de Condensador Shure SM7B",
-            precio: 399000,
-            categoria: "Audio",
+            descripcion: "Pianos digitales y sintetizadores para escenario y estudio.",
+            linkCategoria: "Teclados y Pianos",
         },
     ];
 
     return (
         <div className="inicio-container">
-
             {/* 1. SECCIÓN HERO / BANNER PRINCIPAL */}
             <section
                 className="p-5 mb-5 rounded-4 shadow text-white text-center text-md-start overflow-hidden"
                 style={{
-                    background: "linear-gradient(135deg, var(--color-fondo-oscuro) 0%, var(--color-primario) 100%)",
+                    background:
+                        "linear-gradient(135deg, var(--color-fondo-oscuro) 0%, var(--color-primario) 100%)",
                 }}
             >
                 <div className="row align-items-center py-3">
@@ -76,20 +55,26 @@ export default function Inicio() {
                             Siente la pasión por el sonido perfecto
                         </h1>
                         <p className="lead text-light mb-4">
-                            Explora nuestro catálogo de instrumentos musicales, equipos de sonido profesional y accesorios con garantía oficial y despacho a todo Chile.
+                            Explora nuestro catálogo de instrumentos musicales, equipos de
+                            sonido profesional y accesorios con garantía oficial y despacho
+                            a todo Chile.
                         </p>
                         <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
-                            <Link to="/catalogo" className="btn btn-warning btn-lg px-4 fw-bold shadow-sm">
+                            <Link
+                                to="/catalogo"
+                                className="btn btn-warning btn-lg px-4 fw-bold shadow-sm"
+                            >
                                 🎸 Ver Catálogo Completo
-                            </Link>
-                            <Link to="/ofertas" className="btn btn-outline-light btn-lg px-4 fw-bold">
-                                🔥 Ver Ofertas
                             </Link>
                         </div>
                     </div>
                     <div className="col-lg-4 text-center mt-4 mt-lg-0">
                         <div className="p-4 rounded-circle d-inline-block bg-white bg-opacity-10 border border-light border-opacity-25">
-                            <span style={{ fontSize: "5rem" }} role="img" aria-label="Música">
+                            <span
+                                style={{ fontSize: "5rem" }}
+                                role="img"
+                                aria-label="Música"
+                            >
                                 🎶
                             </span>
                         </div>
@@ -101,12 +86,20 @@ export default function Inicio() {
             <section className="mb-5">
                 <div className="d-flex justify-content-between align-items-end mb-4">
                     <div>
-                        <h2 className="fw-bold m-0" style={{ color: "var(--color-purpura-profundo)" }}>
+                        <h2
+                            className="fw-bold m-0"
+                            style={{ color: "var(--color-purpura-profundo)" }}
+                        >
                             Categorías Destacadas
                         </h2>
-                        <p className="text-muted m-0">Encuentra el equipo ideal para tu proyecto musical</p>
+                        <p className="text-muted m-0">
+                            Encuentra el equipo ideal para tu proyecto musical
+                        </p>
                     </div>
-                    <Link to="/categorias" className="btn btn-outline-primary btn-sm fw-bold">
+                    <Link
+                        to="/catalogo"
+                        className="btn btn-outline-primary btn-sm fw-bold"
+                    >
                         Ver todas →
                     </Link>
                 </div>
@@ -118,9 +111,16 @@ export default function Inicio() {
                                 <div className="card-body d-flex flex-column align-items-center">
                                     <span className="fs-1 mb-3">{cat.icono}</span>
                                     <h5 className="card-title fw-bold mb-2">{cat.nombre}</h5>
-                                    <p className="card-text text-muted small mb-4">{cat.descripcion}</p>
-                                    <Link to="/categorias" className="btn btn-sm btn-outline-dark mt-auto w-100 fw-semibold">
-                                        Explorar
+                                    <p className="card-text text-muted small mb-4">
+                                        {cat.descripcion}
+                                    </p>
+                                    <Link
+                                        to={`/catalogo?categoria=${encodeURIComponent(
+                                            cat.linkCategoria
+                                        )}`}
+                                        className="btn btn-outline-warning text-dark btn-sm fw-bold mt-auto w-100"
+                                    >
+                                        Explorar →
                                     </Link>
                                 </div>
                             </div>
@@ -133,76 +133,30 @@ export default function Inicio() {
             <section className="mb-5">
                 <div className="d-flex justify-content-between align-items-end mb-4">
                     <div>
-                        <h2 className="fw-bold m-0" style={{ color: "var(--color-purpura-profundo)" }}>
+                        <h2
+                            className="fw-bold m-0"
+                            style={{ color: "var(--color-purpura-profundo)" }}
+                        >
                             Productos Destacados
                         </h2>
-                        <p className="text-muted m-0">Los más recomendados por nuestros especialistas</p>
+                        <p className="text-muted m-0">
+                            Lo más solicitado por nuestros clientes este mes
+                        </p>
                     </div>
-                    <Link to="/catalogo" className="btn btn-outline-primary btn-sm fw-bold">
-                        Ir a la Tienda →
+                    <Link
+                        to="/catalogo"
+                        className="btn btn-outline-primary btn-sm fw-bold"
+                    >
+                        Ver catálogo completo →
                     </Link>
                 </div>
 
-                <div className="row g-4">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                     {productosDestacados.map((prod) => (
-                        <div key={prod.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                            <div className="card h-100 shadow-sm border-0 rounded-3 overflow-hidden bg-white">
-                                <div className="bg-light text-center p-4 position-relative">
-                                    <span className="badge bg-secondary position-absolute top-0 start-0 m-3">
-                                        {prod.categoria}
-                                    </span>
-                                    <span className="fs-1">🎵</span>
-                                </div>
-                                <div className="card-body d-flex flex-column">
-                                    <h6 className="card-title fw-bold text-dark mb-2">{prod.nombre}</h6>
-                                    <p className="fs-5 fw-bold text-success mt-auto mb-3">
-                                        ${prod.precio.toLocaleString("es-CL")}
-                                    </p>
-
-                                    <Link to="/catalogo" className="btn btn-primary-custom w-100 btn-sm fw-bold">
-                                        Ver Detalles
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
+                        <ProductoCard key={prod.codigo} producto={prod} />
                     ))}
                 </div>
             </section>
-
-            {/* 4. BENEFICIOS Y GARANTÍAS */}
-            <section className="py-4 px-3 rounded-4 mb-5" style={{ backgroundColor: "var(--color-fondo-suave)" }}>
-                <div className="row g-4 text-center">
-                    <div className="col-12 col-md-3">
-                        <div className="p-2">
-                            <span className="fs-2">🚚</span>
-                            <h6 className="fw-bold mt-2 mb-1">Despacho a todo Chile</h6>
-                            <p className="small text-muted mb-0">Envíos asegurados y rápidos</p>
-                        </div>
-                    </div>
-                    <div className="col-12 col-md-3">
-                        <div className="p-2">
-                            <span className="fs-2">🛡️</span>
-                            <h6 className="fw-bold mt-2 mb-1">Garantía Oficial</h6>
-                            <p className="small text-muted mb-0">Productos 100% originales</p>
-                        </div>
-                    </div>
-                    <div className="col-12 col-md-3">
-                        <div className="p-2">
-                            <span className="fs-2">📍</span>
-                            <h6 className="fw-bold mt-2 mb-1">Retiro en Tienda</h6>
-                            <p className="small text-muted mb-0">Viña del Mar y Santiago</p>
-                        </div>
-                    </div>
-                    <div className="col-12 col-md-3">
-                        <div className="p-2">
-                            <span className="fs-2">🔧</span>
-                            <h6 className="fw-bold mt-2 mb-1">Servicio Técnico</h6>
-                            <p className="small text-muted mb-0">Calibración y mantención</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
         </div>
     );
 }

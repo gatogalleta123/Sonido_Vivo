@@ -13,8 +13,6 @@ import Login from "./pages/Login.jsx";
 import Registro from "./pages/Registro.jsx";
 import Nosotros from "./pages/Nosotros.jsx";
 import Contacto from "./pages/Contacto.jsx";
-import Categorias from "./pages/Categorias.jsx";
-import Ofertas from "./pages/Ofertas.jsx";
 
 import DashboardAdmin from "./pages/admin/DashboardAdmin.jsx";
 import AdminProductos from "./pages/admin/AdminProductos.jsx";
@@ -35,8 +33,6 @@ export default function App() {
         <Route path="registro" element={<Registro />} />
         <Route path="nosotros" element={<Nosotros />} />
         <Route path="contacto" element={<Contacto />} />
-        <Route path="categorias" element={<Categorias />} />
-        <Route path="ofertas" element={<Ofertas />} />
       </Route>
 
       {/* RUTAS PRIVADAS / ADMIN PROTEGIDAS */}

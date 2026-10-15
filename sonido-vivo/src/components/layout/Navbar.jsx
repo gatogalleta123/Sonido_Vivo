@@ -40,17 +40,6 @@ export default function Navbar() {
                             </NavLink>
                         </li>
 
-                        <li className="nav-item">
-                            <NavLink to="/categorias" className={navLinkClass}>
-                                Categorías
-                            </NavLink>
-                        </li>
-
-                        <li className="nav-item">
-                            <NavLink to="/ofertas" className={navLinkClass}>
-                                Ofertas
-                            </NavLink>
-                        </li>
 
                         <li className="nav-item">
                             <NavLink to="/blog" className={navLinkClass}>

@@ -40,16 +40,6 @@ export default function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/categorias" className="text-white-50 text-decoration-none">
-                                    Categorías
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/ofertas" className="text-white-50 text-decoration-none">
-                                    Ofertas Especiales
-                                </Link>
-                            </li>
-                            <li>
                                 <Link to="/nosotros" className="text-white-50 text-decoration-none">
                                     Nosotros
                                 </Link>
