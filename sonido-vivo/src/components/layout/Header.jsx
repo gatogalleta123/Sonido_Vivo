@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { obtenerCarrito } from "../utils/carritoStorage.js";
+import { obtenerCarrito } from "../../utils/carritoStorage.js";
 
 export default function Header() {
     const [carrito, setCarrito] = useState([]);
