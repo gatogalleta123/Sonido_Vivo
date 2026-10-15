@@ -12,8 +12,9 @@ export default function Navbar() {
             <div className="container">
 
                 {/* Botón Toggler para dispositivos móviles */}
+                
                 <button
-                    className="navbar-toggler text-white border-light my-1"
+                    className="navbar-toggler border-light my-1"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarPrincipal"
@@ -21,7 +22,10 @@ export default function Navbar() {
                     aria-expanded="false"
                     aria-label="Toggle navigation"
                 >
-                    <span className="navbar-toggler-icon"></span>
+                    <span 
+                        className="navbar-toggler-icon" 
+                        style={{ filter: "invert(1) grayscale(100%) brightness(200%)" }}
+                    ></span>
                 </button>
 
                 {/* Menú colapsable */}
