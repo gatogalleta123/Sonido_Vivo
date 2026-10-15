@@ -47,6 +47,9 @@ export default function Login() {
 
         localStorage.setItem("sonidoVivo_sesion", JSON.stringify(sesion));
 
+        // 🚀 Disparar evento personalizado para actualizar el Header al instante
+        window.dispatchEvent(new Event("sesionActualizada"));
+
         // Redirigir según el rol del usuario
         if (
             usuarioEncontrado.rol === "administrador" ||
