@@ -1,35 +1,46 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { obtenerCarrito } from "../../utils/carritoStorage.js";
 
 export default function Header() {
+    const navigate = useNavigate();
     const [carrito, setCarrito] = useState([]);
+    const [sesion, setSesion] = useState(null);
 
-    // Cargar el carrito y escuchar sus actualizaciones
+    // Cargar el carrito, la sesión y escuchar actualizaciones
     useEffect(() => {
-        const actualizarCarrito = () => {
+        const actualizarDatos = () => {
             setCarrito(obtenerCarrito());
+            
+            // Leer sesión de localStorage
+            const sesionGuardada = localStorage.getItem("sonidoVivo_sesion");
+            setSesion(sesionGuardada ? JSON.parse(sesionGuardada) : null);
         };
 
-        // Cargar el estado inicial
-        actualizarCarrito();
+        // Cargar estado inicial
+        actualizarDatos();
 
-        // Escuchar cambios en el carrito
-        window.addEventListener("carritoActualizado", actualizarCarrito);
+        // Escuchar eventos personalizados
+        window.addEventListener("carritoActualizado", actualizarDatos);
+        window.addEventListener("sesionActualizada", actualizarDatos);
 
         return () => {
-            window.removeEventListener(
-                "carritoActualizado",
-                actualizarCarrito
-            );
+            window.removeEventListener("carritoActualizado", actualizarDatos);
+            window.removeEventListener("sesionActualizada", actualizarDatos);
         };
     }, []);
 
-    // Sumar las unidades de todos los productos
     const cantidadProductos = carrito.reduce(
         (total, item) => total + item.cantidad,
         0
     );
+
+    const handleCerrarSesion = () => {
+        localStorage.removeItem("sonidoVivo_sesion");
+        // Disparar evento para que el Header se actualice al instante
+        window.dispatchEvent(new Event("sesionActualizada"));
+        navigate("/");
+    };
 
     return (
         <header className="site-header py-3 border-bottom shadow-sm">
@@ -83,17 +94,49 @@ export default function Header() {
                             </span>
                         </Link>
 
-                        {/* Iniciar Sesión / Registro */}
-                        <Link to="/login" className="btn btn-outline-light btn-sm">
-                            Iniciar Sesión
-                        </Link>
+                        {/* Renderizado condicional según si hay sesión iniciada */}
+                        {sesion ? (
+                            <div className="dropdown">
+                                <button
+                                    className="btn btn-outline-light btn-sm dropdown-toggle d-flex align-items-center gap-1"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    👤 {sesion.nombre}
+                                </button>
+                                <ul className="dropdown-menu dropdown-menu-end shadow">
+                                    {(sesion.rol === "administrador" || sesion.rol === "vendedor") && (
+                                        <li>
+                                            <Link className="dropdown-item" to="/admin">
+                                                ⚙️ Panel Admin
+                                            </Link>
+                                        </li>
+                                    )}
+                                    <li>
+                                        <button
+                                            className="dropdown-item text-danger"
+                                            onClick={handleCerrarSesion}
+                                        >
+                                            🚪 Cerrar Sesión
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        ) : (
+                            <>
+                                <Link to="/login" className="btn btn-outline-light btn-sm">
+                                    Iniciar Sesión
+                                </Link>
 
-                        <Link
-                            to="/registro"
-                            className="btn btn-warning btn-sm fw-bold"
-                        >
-                            Crear Cuenta
-                        </Link>
+                                <Link
+                                    to="/registro"
+                                    className="btn btn-warning btn-sm fw-bold"
+                                >
+                                    Crear Cuenta
+                                </Link>
+                            </>
+                        )}
 
                     </div>
                 </div>
