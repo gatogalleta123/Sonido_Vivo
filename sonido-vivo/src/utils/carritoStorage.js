@@ -16,6 +16,10 @@ export function guardarCarrito(carrito) {
     localStorage.setItem(STORAGE_KEY_CARRITO, JSON.stringify(carrito));
 }
 
+function notificarCarritoActualizado() {
+    window.dispatchEvent(new Event("carritoActualizado"));
+}
+
 // Agregar producto o incrementar cantidad si ya existe
 export function agregarAlCarritoStorage(producto, cantidad = 1) {
     const carrito = obtenerCarrito();
@@ -36,8 +40,10 @@ export function agregarAlCarritoStorage(producto, cantidad = 1) {
     }
 
     guardarCarrito(carrito);
-    return carrito;
+    notificarCarritoActualizado();
+return carrito;
 }
+
 
 // Cambiar la cantidad de un producto (+1 o -1)
 export function cambiarCantidadStorage(codigo, cambio) {
@@ -53,6 +59,7 @@ export function cambiarCantidadStorage(codigo, cambio) {
         .filter(Boolean);
 
     guardarCarrito(carrito);
+    notificarCarritoActualizado();
     return carrito;
 }
 
@@ -61,11 +68,14 @@ export function eliminarDelCarritoStorage(codigo) {
     const carrito = obtenerCarrito();
     const actualizado = carrito.filter((item) => item.codigo !== codigo);
     guardarCarrito(actualizado);
+    notificarCarritoActualizado();
     return actualizado;
 }
 
 // Vaciar el carrito por completo
 export function vaciarCarritoStorage() {
     localStorage.removeItem(STORAGE_KEY_CARRITO);
+    notificarCarritoActualizado();
     return [];
 }
+
