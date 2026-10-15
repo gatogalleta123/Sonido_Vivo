@@ -1,87 +1,125 @@
-import { useState, useEffect, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState, useMemo, useEffect } from "react";
 import ProductoCard from "../components/ProductoCard.jsx";
 import { obtenerProductos, obtenerCategorias } from "../data/productos.js";
+import { agregarAlCarritoStorage } from "../utils/carritoStorage.js";
 
 export default function Catalogo() {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const categoriaUrl = searchParams.get("categoria");
-
     const [productos, setProductos] = useState([]);
     const [categorias, setCategorias] = useState([]);
+
+    // Estados para filtros
     const [busqueda, setBusqueda] = useState("");
-    const [categoriaFiltro, setCategoriaFiltro] = useState(categoriaUrl || "Todas");
+    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas");
+    const [orden, setOrden] = useState("defecto");
+
+    // Estado para notificación de carrito
+    const [mensajeToast, setMensajeToast] = useState("");
 
     useEffect(() => {
         setProductos(obtenerProductos());
         setCategorias(obtenerCategorias());
     }, []);
 
-    // Escuchar si cambia la categoría desde la URL
-    useEffect(() => {
-        if (categoriaUrl) {
-            setCategoriaFiltro(categoriaUrl);
-        } else {
-            setCategoriaFiltro("Todas");
-        }
-    }, [categoriaUrl]);
+    // Filtrar y ordenar productos de forma optimizada
+    const productosFiltrados = useMemo(() => {
+        let resultado = [...productos];
 
-    // Manejar el cambio en el selector manual
-    const handleCambioCategoria = (e) => {
-        const seleccion = e.target.value;
-        setCategoriaFiltro(seleccion);
-
-        if (seleccion === "Todas") {
-            setSearchParams({});
-        } else {
-            setSearchParams({ categoria: seleccion });
+        // 1. Filtrar por término de búsqueda (nombre, marca o modelo)
+        if (busqueda.trim() !== "") {
+            const termino = busqueda.toLowerCase().trim();
+            resultado = resultado.filter(
+                (p) =>
+                    p.nombre.toLowerCase().includes(termino) ||
+                    p.marca.toLowerCase().includes(termino) ||
+                    p.modelo.toLowerCase().includes(termino)
+            );
         }
+
+        // 2. Filtrar por categoría
+        if (categoriaSeleccionada !== "Todas") {
+            resultado = resultado.filter((p) => p.categoria === categoriaSeleccionada);
+        }
+
+        // 3. Ordenamiento
+        if (orden === "precio-menor") {
+            resultado.sort((a, b) => a.precio - b.precio);
+        } else if (orden === "precio-mayor") {
+            resultado.sort((a, b) => b.precio - a.precio);
+        } else if (orden === "nombre") {
+            resultado.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        }
+
+        return resultado;
+    }, [productos, busqueda, categoriaSeleccionada, orden]);
+
+    // Manejador para agregar productos al carrito
+    const handleAgregarAlCarrito = (producto) => {
+        agregarAlCarritoStorage(producto);
+        setMensajeToast(`¡${producto.nombre} agregado al carrito!`);
+        setTimeout(() => {
+            setMensajeToast("");
+        }, 3000);
     };
 
-    const productosFiltrados = useMemo(() => {
-        return productos.filter((p) => {
-            const coincideBusqueda =
-                p.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-                p.marca.toLowerCase().includes(busqueda.toLowerCase()) ||
-                p.codigo.toLowerCase().includes(busqueda.toLowerCase());
-
-            const coincideCategoria =
-                categoriaFiltro === "Todas" || p.categoria === categoriaFiltro;
-
-            return coincideBusqueda && coincideCategoria;
-        });
-    }, [productos, busqueda, categoriaFiltro]);
-
     return (
-        <div className="catalogo-container mb-5">
-            {/* Encabezado */}
-            <div className="bg-white p-4 p-md-5 rounded-3 shadow-sm mb-4 border text-center">
-                <h1 className="fw-bold mb-2" style={{ color: "var(--color-purpura-profundo)" }}>
-                    🎸 Catálogo de Instrumentos
-                </h1>
-                <p className="text-muted m-0">
-                    Explora nuestro stock de guitarras, bajos, teclados y equipos de audio.
-                </p>
+        <div className="catalogo-container">
+
+            {/* Encabezado del Catálogo */}
+            <div className="bg-white p-4 rounded-3 shadow-sm mb-4 border">
+                <div className="row align-items-center">
+                    <div className="col-md-6">
+                        <h1 className="fw-bold mb-1" style={{ color: "var(--color-purpura-profundo)" }}>
+                            🎸 Catálogo de Productos
+                        </h1>
+                        <p className="text-muted m-0">
+                            Explora nuestros instrumentos, equipos de sonido y accesorios en stock.
+                        </p>
+                    </div>
+                    <div className="col-md-6 text-md-end mt-3 mt-md-0">
+                        <span className="badge text-bg-dark fs-6 px-3 py-2">
+                            {productosFiltrados.length} productos encontrados
+                        </span>
+                    </div>
+                </div>
             </div>
 
-            {/* Barra de Filtros */}
-            <div className="card shadow-sm border-0 bg-white p-3 mb-4">
-                <div className="row g-3">
-                    <div className="col-12 col-md-6">
+            {/* Alerta / Toast flotante al agregar al carrito */}
+            {mensajeToast && (
+                <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 1100 }}>
+                    <div className="alert alert-success shadow-lg d-flex align-items-center gap-2 mb-0" role="alert">
+                        <span>✅</span>
+                        <div>{mensajeToast}</div>
+                    </div>
+                </div>
+            )}
+
+            {/* Barra de Filtros y Búsqueda */}
+            <div className="card border-0 shadow-sm p-3 mb-4 bg-white">
+                <div className="row g-3 align-items-center">
+
+                    {/* Buscador */}
+                    <div className="col-12 col-md-5">
+                        <label className="form-label small fw-bold text-muted mb-1">
+                            Buscar Producto
+                        </label>
                         <input
                             type="search"
                             className="form-control"
-                            placeholder="Buscar por nombre, marca o código..."
+                            placeholder="Buscar por marca, modelo o nombre..."
                             value={busqueda}
                             onChange={(e) => setBusqueda(e.target.value)}
                         />
                     </div>
 
-                    <div className="col-12 col-md-4">
+                    {/* Categoría */}
+                    <div className="col-12 col-sm-6 col-md-4">
+                        <label className="form-label small fw-bold text-muted mb-1">
+                            Filtrar por Categoría
+                        </label>
                         <select
                             className="form-select"
-                            value={categoriaFiltro}
-                            onChange={handleCambioCategoria}
+                            value={categoriaSeleccionada}
+                            onChange={(e) => setCategoriaSeleccionada(e.target.value)}
                         >
                             <option value="Todas">Todas las categorías</option>
                             {categorias.map((cat) => (
@@ -92,38 +130,57 @@ export default function Catalogo() {
                         </select>
                     </div>
 
-                    <div className="col-12 col-md-2 text-end d-flex align-items-center justify-content-end">
-                        <span className="badge text-bg-warning fs-6 px-3 py-2">
-                            {productosFiltrados.length} Resultados
-                        </span>
+                    {/* Ordenamiento */}
+                    <div className="col-12 col-sm-6 col-md-3">
+                        <label className="form-label small fw-bold text-muted mb-1">
+                            Ordenar Por
+                        </label>
+                        <select
+                            className="form-select"
+                            value={orden}
+                            onChange={(e) => setOrden(e.target.value)}
+                        >
+                            <option value="defecto">Relevancia</option>
+                            <option value="precio-menor">Precio: Menor a Mayor</option>
+                            <option value="precio-mayor">Precio: Mayor a Menor</option>
+                            <option value="nombre">Nombre A-Z</option>
+                        </select>
                     </div>
+
                 </div>
             </div>
 
             {/* Grilla de Productos */}
             {productosFiltrados.length > 0 ? (
-                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
                     {productosFiltrados.map((prod) => (
-                        <ProductoCard key={prod.codigo} producto={prod} />
+                        <ProductoCard
+                            key={prod.codigo}
+                            producto={prod}
+                            onAgregarAlCarrito={handleAgregarAlCarrito}
+                        />
                     ))}
                 </div>
             ) : (
-                <div className="text-center py-5 bg-white rounded-3 shadow-sm border">
+                <div className="text-center py-5 bg-white rounded-3 shadow-sm my-4 border">
                     <span className="fs-1">🔍</span>
                     <h4 className="fw-bold mt-2">No se encontraron productos</h4>
-                    <p className="text-muted">Intenta cambiar el término de búsqueda o la categoría seleccionada.</p>
+                    <p className="text-muted">
+                        Intenta cambiar los términos de búsqueda o selecciona otra categoría.
+                    </p>
                     <button
-                        className="btn btn-outline-primary btn-sm fw-bold"
+                        className="btn btn-outline-primary btn-sm fw-bold mt-2"
                         onClick={() => {
                             setBusqueda("");
-                            setCategoriaFiltro("Todas");
-                            setSearchParams({});
+                            setCategoriaSeleccionada("Todas");
+                            setOrden("defecto");
                         }}
                     >
-                        Limpiar Filtros
+                        Restablecer Filtros
                     </button>
                 </div>
             )}
+
         </div>
     );
 }
