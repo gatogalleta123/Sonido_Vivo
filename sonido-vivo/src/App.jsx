@@ -13,10 +13,12 @@ import Login from "./pages/Login.jsx";
 import Registro from "./pages/Registro.jsx";
 import Nosotros from "./pages/Nosotros.jsx";
 import Contacto from "./pages/Contacto.jsx";
+import Blog from "./pages/Blog.jsx";
 
 import DashboardAdmin from "./pages/admin/DashboardAdmin.jsx";
 import AdminProductos from "./pages/admin/AdminProductos.jsx";
 import AdminUsuarios from "./pages/admin/AdminUsuarios.jsx";
+import AdminPedidos from "./pages/admin/AdminPedidos.jsx";
 
 export default function App() {
   return (
@@ -33,6 +35,7 @@ export default function App() {
         <Route path="registro" element={<Registro />} />
         <Route path="nosotros" element={<Nosotros />} />
         <Route path="contacto" element={<Contacto />} />
+        <Route path="blog" element={<Blog />} />
       </Route>
 
       {/* RUTAS PRIVADAS / ADMIN PROTEGIDAS */}
@@ -41,6 +44,7 @@ export default function App() {
           <Route index element={<DashboardAdmin />} />
           <Route path="productos" element={<AdminProductos />} />
           <Route path="usuarios" element={<AdminUsuarios />} />
+          <Route path="pedidos" element={<AdminPedidos />} /> 
         </Route>
       </Route>
     </Routes>
