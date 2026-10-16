@@ -5,7 +5,7 @@
 // 1. Validar correo electrónico con expresión regular
 export function validarCorreo(correo) {
     if (!correo || typeof correo !== "string") return false;
-    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+\$/;
+    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regexCorreo.test(correo.trim());
 }
 

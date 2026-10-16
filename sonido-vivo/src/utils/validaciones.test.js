@@ -27,7 +27,7 @@ describe("Pruebas Unitarias: Módulo de Validaciones", () => {
     // Test 4
     it("4. validarRut: valida correctamente un RUT chileno usando Módulo 11", () => {
         // RUTs chilenos reales válidos
-        expect(validarRut("19.011.022-K")).toBe(true);
+        expect(validarRut("23.000.000-K")).toBe(true);
         expect(validarRut("12345678-5")).toBe(true);
         // RUTs falsos o mal calculados
         expect(validarRut("12.345.678-0")).toBe(false);

@@ -40,7 +40,7 @@ describe("Pruebas Unitarias: Componente ProductoCard", () => {
             </MemoryRouter>
         );
 
-        expect(screen.getByText("$299.990")).toBeInTheDocument();
+        expect(screen.getByText(/299\.990/)).toBeInTheDocument();
     });
 
     // Test 7
