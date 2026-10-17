@@ -8,14 +8,14 @@ export default function Blog() {
     const articulos = [
         {
             id: 1,
-            titulo: "Guía definitiva: Cómo elegir tu primera guitarra eléctrica en 2026",
+            titulo: "Guía definitiva: Cómo elegir tu primera guitarra eléctrica",
             categoria: "Guías de Compra",
             fecha: "12 de Octubre, 2026",
             autor: "Taller Sonido Vivo",
             resumen:
-                "Descubre los factores clave entre tipos de cuerpo (Solid Body vs Semi-Hollow), cápsulas (Single Coil vs Humbucker) y maderas para tomar la decisión correcta según tu estilo musical.",
+                "Descubre qué debes considerar al elegir tu primera guitarra eléctrica: comodidad, tipos de cuerpo, cápsulas single-coil y humbucker, y características que se adaptan a tu estilo musical.",
             imagen: "https://images.unsplash.com/photo-1516924962500-2b4b3b99ea02?auto=format&fit=crop&w=800&q=80",
-            enlaceLectura: "#",
+            enlaceLectura: "https://www.fender.com/articles/instruments/7-electric-guitars-for-the-beginner",
             destacado: true,
         },
         {
@@ -25,9 +25,9 @@ export default function Blog() {
             fecha: "05 de Octubre, 2026",
             autor: "Equipo Técnico",
             resumen:
-                "Consejos esenciales de acondicionamiento acústico, elección de interfaces de audio de baja latencia y micrófonos de condensador para lograr mezclas de nivel comercial desde casa.",
+                "Descubre cómo mejorar tus grabaciones desde casa mediante una correcta selección de interfaces de audio, técnicas de microfonía y control de la acústica. Aprende a reducir el ruido y aprovechar al máximo tu equipo de producción.",
             imagen: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80",
-            enlaceLectura: "#",
+            enlaceLectura: "https://focusrite.com/articles/how-to-record-acoustic-instruments/",
             destacado: false,
         },
         {
@@ -37,11 +37,12 @@ export default function Blog() {
             fecha: "28 de Septiembre, 2026",
             autor: "Luthier Staff",
             resumen:
-                "Aprende a ajustar la octavación, la curvatura del mástil y la altura de las cuerdas en tu guitarra o bajo para mantener una afinación perfecta y prevenir daños por cambios de humedad.",
-            imagen: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80",
-            enlaceLectura: "#",
+                "Aprende a mantener tu guitarra o bajo en óptimas condiciones mediante el cambio de cuerdas, la revisión del mástil y el ajuste de la octavación. Descubre cómo detectar problemas de afinación y cuándo acudir a un especialista.",
+            imagen: "https://images.unsplash.com/photo-1550291652-6ea9114a47b1?auto=format&fit=crop&w=800&q=80",
+            enlaceLectura: "https://blog.ernieball.com/interesting/maintaining-your-instrument/",
             destacado: false,
         },
+
         {
             id: 4,
             titulo: "Analog vs Digital: Los mejores pedales y multiefectos para el escenario",
@@ -49,9 +50,9 @@ export default function Blog() {
             fecha: "15 de Septiembre, 2026",
             autor: "Especialistas de Sonido",
             resumen:
-                "Analizamos las ventajas entre armar una pedalera analógica tradicional versus utilizar procesadores digitales y modeladores de amplificadores en presentaciones en vivo.",
-            imagen: "https://images.unsplash.com/photo-1525201548942-d8732f6617a0?auto=format&fit=crop&w=800&q=80",
-            enlaceLectura: "#",
+                "Compara las posibilidades de las pedaleras analógicas tradicionales con la versatilidad de los procesadores digitales. Descubre cómo combinar pedales individuales, simulaciones de amplificadores y efectos programables para crear sonidos personalizados.",
+            imagen: "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=800&q=80",
+            enlaceLectura: "https://blog.line6.com/2026/05/28/why-the-hx-stomp-is-the-ultimate-pedalboard-enhancer/",
             destacado: false,
         },
     ];
@@ -89,7 +90,7 @@ export default function Blog() {
                             type="button"
                             className={`btn btn-sm fw-bold px-3 py-2 ${categoriaFiltro === cat
                                     ? "btn-dark shadow-sm"
-                                    : "btn-outline-secondary bg-white"
+                                    : "btn-outline-dark"
                                 }`}
                             onClick={() => setCategoriaFiltro(cat)}
                         >
@@ -138,15 +139,14 @@ export default function Blog() {
                                     </p>
 
                                     <div className="d-flex align-items-center justify-content-between pt-2 border-top">
-                                        <button
-                                            type="button"
-                                            className="btn btn-outline-primary fw-bold"
-                                            onClick={() =>
-                                                alert(`Próximamente estará disponible la lectura completa de: "${item.titulo}"`)
-                                            }
+                                        <a
+                                            href={item.enlaceLectura}
+                                            className="btn btn-outline-warning fw-bold"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                         >
-                                            📖 Leer Noticia Completa
-                                        </button>
+                                            Leer Noticia Completa
+                                        </a>
                                         <Link to="/contacto" className="small text-muted text-decoration-none">
                                             ¿Dudas sobre el tema? Contáctanos
                                         </Link>
