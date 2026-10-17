@@ -37,3 +37,42 @@ body {
     background-color: var(--color-primario-vibrante);
     color: var(--color-blanco);
 }
+
+.admin-sidebar {
+    flex: 0 0 260px;
+    width: 260px;
+}
+
+.admin-sidebar-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.admin-sidebar-header {
+    min-height: 48px;
+}
+
+@media (max-width: 991.98px) {
+    .admin-sidebar {
+        flex: 0 0 auto;
+        width: 100%;
+        min-height: auto !important;
+    }
+
+    .admin-sidebar-header {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+        border-bottom: 0 !important;
+    }
+
+    .admin-sidebar-content {
+        display: none;
+        flex: initial;
+        padding-top: 1rem;
+    }
+
+    .admin-sidebar-content.is-open {
+        display: flex;
+    }
+}
