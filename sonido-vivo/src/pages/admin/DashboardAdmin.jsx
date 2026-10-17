@@ -26,13 +26,13 @@ export default function DashboardAdmin() {
             <div className="bg-white p-4 rounded-3 shadow-sm mb-4 border d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
                     <h2 className="fw-bold m-0" style={{ color: "var(--color-purpura-profundo)" }}>
-                        📊 Panel de Control y Métricas
+                        Panel de Control y Métricas
                     </h2>
                     <p className="text-muted m-0">Resumen operativo general de la Tienda Sonido Vivo</p>
                 </div>
                 <div className="d-flex gap-2">
                     <Link to="/admin/productos" className="btn btn-warning fw-bold btn-sm">
-                        ➕ Nuevo Producto
+                        + Nuevo Producto
                     </Link>
                 </div>
             </div>
@@ -43,28 +43,24 @@ export default function DashboardAdmin() {
                     titulo="Total Inventario"
                     valor={`\$${valorInventario.toLocaleString("es-CL")}`}
                     subtitulo="Valorización comercial"
-                    icono="💰"
                     colorBorder="success"
                 />
                 <KpiCard
                     titulo="Catálogo Activo"
                     valor={totalProductos}
                     subtitulo="Productos registrados"
-                    icono="🎸"
                     colorBorder="primary"
                 />
                 <KpiCard
                     titulo="Stock Crítico"
                     valor={stockCriticoCount}
                     subtitulo="Requieren reabastecimiento"
-                    icono="⚠️"
                     colorBorder="danger"
                 />
                 <KpiCard
                     titulo="Usuarios Registrados"
                     valor={totalUsuarios}
                     subtitulo="Clientes y staff"
-                    icono="👥"
                     colorBorder="warning"
                 />
             </div>
@@ -73,7 +69,7 @@ export default function DashboardAdmin() {
             {stockCriticoCount > 0 && (
                 <div className="card shadow-sm border-0 mb-4 bg-white">
                     <div className="card-header bg-danger text-white py-3">
-                        <h6 className="fw-bold mb-0">⚠️ Productos con Stock Crítico</h6>
+                        <h6 className="fw-bold mb-0">Productos con Stock Crítico</h6>
                     </div>
                     <div className="card-body p-0">
                         <div className="table-responsive">

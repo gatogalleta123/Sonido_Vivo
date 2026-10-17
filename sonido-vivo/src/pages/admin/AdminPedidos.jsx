@@ -18,7 +18,7 @@ export default function AdminPedidos() {
         <div className="admin-pedidos-container">
             <div className="bg-white p-4 rounded-3 shadow-sm mb-4 border">
                 <h2 className="fw-bold m-0" style={{ color: "var(--color-purpura-profundo)" }}>
-                    📦 Gestión de Pedidos
+                    Gestión de Pedidos
                 </h2>
                 <p className="text-muted m-0">
                     Revisa las órdenes de compra realizadas por los clientes en la tienda.
@@ -53,8 +53,8 @@ export default function AdminPedidos() {
                                             </td>
                                             <td>
                                                 {p.cliente.medioPago === "tarjeta"
-                                                    ? "💳 Webpay / Tarjeta"
-                                                    : "🏦 Transferencia"}
+                                                    ? "Webpay / Tarjeta"
+                                                    : "Transferencia"}
                                             </td>
                                             <td className="text-end fw-bold text-success">
                                                 \${p.totalFinal.toLocaleString("es-CL")}

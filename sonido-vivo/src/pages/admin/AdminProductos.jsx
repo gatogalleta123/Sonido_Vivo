@@ -139,12 +139,12 @@ export default function AdminProductos() {
             <div className="bg-white p-4 rounded-3 shadow-sm mb-4 border d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
                     <h2 className="fw-bold m-0" style={{ color: "var(--color-purpura-profundo)" }}>
-                        🎸 Gestión de Inventario
+                        Gestión de Inventario
                     </h2>
                     <p className="text-muted m-0">Administra el catálogo de productos, precios y stock disponible.</p>
                 </div>
                 <button className="btn btn-warning fw-bold shadow-sm" onClick={handleAbrirCrear}>
-                    ➕ Agregar Nuevo Producto
+                    + Agregar Nuevo Producto
                 </button>
             </div>
 
@@ -245,14 +245,14 @@ export default function AdminProductos() {
                                                             title="Editar"
                                                             onClick={() => handleAbrirEditar(p)}
                                                         >
-                                                            ✏️
+                                                            Editar
                                                         </button>
                                                         <button
                                                             className="btn btn-outline-danger"
                                                             title="Eliminar"
                                                             onClick={() => handleEliminar(p.codigo, p.nombre)}
                                                         >
-                                                            🗑️
+                                                            Eliminar
                                                         </button>
                                                     </div>
                                                 </td>
@@ -280,7 +280,7 @@ export default function AdminProductos() {
 
                             <div className="modal-header bg-dark text-white">
                                 <h5 className="modal-title fw-bold">
-                                    {modoEdicion ? `✏️ Editar Producto: ${formData.codigo}` : "➕ Agregar Nuevo Producto"}
+                                    {modoEdicion ? `Editar Producto: ${formData.codigo}` : "+ Agregar Nuevo Producto"}
                                 </h5>
                                 <button
                                     type="button"
@@ -447,7 +447,7 @@ export default function AdminProductos() {
                                         Cancelar
                                     </button>
                                     <button type="submit" className="btn btn-warning fw-bold">
-                                        💾 Guardar Cambios
+                                        Guardar Cambios
                                     </button>
                                 </div>
                             </form>

@@ -148,12 +148,12 @@ export default function AdminUsuarios() {
             <div className="bg-white p-4 rounded-3 shadow-sm mb-4 border d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
                     <h2 className="fw-bold m-0" style={{ color: "var(--color-purpura-profundo)" }}>
-                        👥 Gestión de Usuarios y Roles
+                        Gestión de Usuarios y Roles
                     </h2>
                     <p className="text-muted m-0">Administra accesos, roles del personal y estado de las cuentas.</p>
                 </div>
                 <button className="btn btn-warning fw-bold shadow-sm" onClick={handleAbrirCrear}>
-                    ➕ Registrar Nuevo Usuario
+                    + Registrar Nuevo Usuario
                 </button>
             </div>
 
@@ -247,7 +247,7 @@ export default function AdminUsuarios() {
                                                         style={{ fontSize: "0.75rem" }}
                                                         onClick={() => handleCambiarEstado(u.rut, u.estado)}
                                                     >
-                                                        {u.estado === "activo" ? "✔ Activo" : "🚫 Inactivo"}
+                                                        {u.estado === "activo" ? "Activo" : "Inactivo"}
                                                     </button>
                                                 </td>
                                                 <td className="text-center">
@@ -257,14 +257,14 @@ export default function AdminUsuarios() {
                                                             title="Editar"
                                                             onClick={() => handleAbrirEditar(u)}
                                                         >
-                                                            ✏️
+                                                            Editar
                                                         </button>
                                                         <button
                                                             className="btn btn-outline-danger"
                                                             title="Eliminar"
                                                             onClick={() => handleEliminar(u.rut, `${u.nombre} ${u.apellidos}`)}
                                                         >
-                                                            🗑️
+                                                            Eliminar
                                                         </button>
                                                     </div>
                                                 </td>
@@ -292,7 +292,7 @@ export default function AdminUsuarios() {
 
                             <div className="modal-header bg-dark text-white">
                                 <h5 className="modal-title fw-bold">
-                                    {modoEdicion ? `✏️ Editar Usuario: ${formData.rut}` : "➕ Registrar Nuevo Usuario"}
+                                    {modoEdicion ? `Editar Usuario: ${formData.rut}` : "+ Registrar Nuevo Usuario"}
                                 </h5>
                                 <button
                                     type="button"
@@ -442,7 +442,7 @@ export default function AdminUsuarios() {
                                         Cancelar
                                     </button>
                                     <button type="submit" className="btn btn-warning fw-bold">
-                                        💾 Guardar Usuario
+                                        Guardar Usuario
                                     </button>
                                 </div>
                             </form>

@@ -20,7 +20,6 @@ export default function SidebarAdmin() {
 
             {/* Identidad del Panel */}
             <div className="d-flex align-items-center gap-2 mb-4 pb-3 border-bottom border-secondary">
-                <span className="fs-3">🛡️</span>
                 <div>
                     <h6 className="fw-bold mb-0 text-white">Panel Admin</h6>
                     <small className="text-warning">Sonido Vivo</small>
@@ -31,22 +30,22 @@ export default function SidebarAdmin() {
             <ul className="nav nav-pills flex-column mb-auto gap-2">
                 <li className="nav-item">
                     <NavLink to="/admin" end className={navLinkClass}>
-                        📊 Dashboard
+                        Dashboard
                     </NavLink>
                 </li>
                 <li className="nav-item">
                     <NavLink to="/admin/productos" className={navLinkClass}>
-                        🎸 Productos / Stock
+                        Productos / Stock
                     </NavLink>
                 </li>
                 <li className="nav-item">
                     <NavLink to="/admin/usuarios" className={navLinkClass}>
-                        👥 Usuarios / Roles
+                        Usuarios / Roles
                     </NavLink>
                 </li>
                 <li className="nav-item">
                     <NavLink to="/admin/pedidos" className={navLinkClass}>
-                        📦 Gestión de Pedidos
+                        Gestión de Pedidos
                     </NavLink>
                 </li>
             </ul>
@@ -63,14 +62,14 @@ export default function SidebarAdmin() {
 
             <div className="d-grid gap-2">
                 <NavLink to="/" className="btn btn-outline-light btn-sm fw-semibold">
-                    🌐 Ir a la Tienda
+                    Ir a la Tienda
                 </NavLink>
                 <button
                     type="button"
                     className="btn btn-danger btn-sm fw-bold"
                     onClick={handleCerrarSesion}
                 >
-                    🚪 Cerrar Sesión
+                    Cerrar Sesión
                 </button>
             </div>
 
