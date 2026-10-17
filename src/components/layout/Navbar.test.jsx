@@ -8,7 +8,7 @@ describe("Navbar", () => {
         localStorage.clear();
     });
 
-    it("navigates when a menu link is clicked without treating it as a collapse trigger", () => {
+    it("14. Navbar: navega al seleccionar un enlace del menú", () => {
         render(
             <MemoryRouter initialEntries={["/"]}>
                 <Navbar />

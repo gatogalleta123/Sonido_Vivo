@@ -1,14 +1,11 @@
 # Dependencias de Node.js
 node_modules/
 
-# Evitar instalaciones accidentales en la carpeta principal
-/package.json
-/package-lock.json
-
 # Archivos de compilacion
 dist/
 build/
 dist-ssr/
+*.local
 
 # Registros y archivos temporales
 *.log

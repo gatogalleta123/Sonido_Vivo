@@ -8,7 +8,7 @@ describe("DetalleProducto", () => {
         localStorage.clear();
     });
 
-    it("agrega al carrito la cantidad seleccionada y actualiza el almacenamiento", async () => {
+    it("13. DetalleProducto: agrega al carrito la cantidad seleccionada", async () => {
         render(
             <MemoryRouter initialEntries={["/detalle-producto/GA001"]}>
                 <Routes>

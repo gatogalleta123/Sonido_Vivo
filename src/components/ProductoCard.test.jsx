@@ -18,7 +18,7 @@ const productoPrueba = {
 
 describe("Pruebas Unitarias: Componente ProductoCard", () => {
     // Test 5
-    it("5. Renderiza correctamente el nombre, marca, modelo y categoría del producto", () => {
+    it("7. ProductoCard: renderiza nombre, marca, modelo y categoría", () => {
         render(
             <MemoryRouter>
                 <ProductoCard producto={productoPrueba} />
@@ -33,7 +33,7 @@ describe("Pruebas Unitarias: Componente ProductoCard", () => {
     });
 
     // Test 6
-    it("6. Muestra el precio formateado correctamente en Pesos Chilenos (CLP)", () => {
+    it("8. ProductoCard: muestra el precio en Pesos Chilenos (CLP)", () => {
         render(
             <MemoryRouter>
                 <ProductoCard producto={productoPrueba} />
@@ -44,7 +44,7 @@ describe("Pruebas Unitarias: Componente ProductoCard", () => {
     });
 
     // Test 7
-    it("7. Ejecuta el callback onAgregarAlCarrito cuando el usuario hace clic en el botón", () => {
+    it("9. ProductoCard: ejecuta onAgregarAlCarrito al hacer clic", () => {
         const mockAgregar = vi.fn(); // Mock function
 
         render(

@@ -37,12 +37,12 @@ describe("Pruebas Unitarias: Módulo de Validaciones", () => {
         expect(validarRut("123456789012345-0")).toBe(false);
     });
 
-    it("normalizarRut: elimina puntos y guiones del RUT ingresado", () => {
+    it("5. normalizarRut: elimina puntos y guiones del RUT ingresado", () => {
         expect(normalizarRut("12.345.678-K")).toBe("12345678K");
         expect(normalizarRut("12 345 678-K")).toBe("12345678K");
     });
 
-    it("validarUrl: acepta URLs web válidas y rechaza esquemas no web", () => {
+    it("6. validarUrl: acepta URLs web válidas y rechaza esquemas no web", () => {
         expect(validarUrl("https://sonidovivo.cl/imagen.jpg")).toBe(true);
         expect(validarUrl("javascript:alert(1)")).toBe(false);
         expect(validarUrl("no es una url")).toBe(false);

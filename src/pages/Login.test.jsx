@@ -17,7 +17,7 @@ function renderLoginConRutas() {
 
 describe("Pruebas Unitarias: Página de Login e Interacción de Usuario", () => {
     // Test 8
-    it("8. Muestra mensaje de alerta cuando se intenta enviar el formulario con campos vacíos", () => {
+    it("10. Login: muestra error cuando se envía el formulario vacío", () => {
         renderLoginConRutas();
 
         const botonSubmit = screen.getByRole("button", { name: /iniciar sesión/i });
@@ -29,7 +29,7 @@ describe("Pruebas Unitarias: Página de Login e Interacción de Usuario", () => 
     });
 
     // Test 9
-    it("9. Muestra mensaje de error al ingresar un correo que no existe en el sistema", () => {
+    it("11. Login: muestra error si el correo no está registrado", () => {
         renderLoginConRutas();
 
         const inputCorreo = screen.getByLabelText(/correo electrónico/i);
@@ -46,7 +46,7 @@ describe("Pruebas Unitarias: Página de Login e Interacción de Usuario", () => 
     });
 
     // Test 10
-    it("10. Autentica un usuario válido, guarda la sesión en localStorage y redirige al panel /admin", () => {
+    it("12. Login: autentica al usuario y redirige al panel admin", () => {
         renderLoginConRutas();
 
         const inputCorreo = screen.getByLabelText(/correo electrónico/i);
