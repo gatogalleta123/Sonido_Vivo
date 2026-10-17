@@ -6,6 +6,7 @@ export default function Header() {
     const navigate = useNavigate();
     const [carrito, setCarrito] = useState([]);
     const [sesion, setSesion] = useState(null);
+    const [busqueda, setBusqueda] = useState("");
 
     // Cargar el carrito, la sesión y escuchar actualizaciones
     useEffect(() => {
@@ -42,6 +43,12 @@ export default function Header() {
         navigate("/");
     };
 
+    const handleBuscar = (e) => {
+        e.preventDefault();
+        const termino = busqueda.trim();
+        navigate(termino ? `/catalogo?busqueda=${encodeURIComponent(termino)}` : "/catalogo");
+    };
+
     return (
         <header className="site-header py-3 border-bottom shadow-sm">
             <div className="container">
@@ -63,13 +70,15 @@ export default function Header() {
                     <div className="col-12 col-md-5">
                         <form
                             className="d-flex"
-                            onSubmit={(e) => e.preventDefault()}
+                            onSubmit={handleBuscar}
                         >
                             <input
                                 type="search"
                                 className="form-control me-2"
                                 placeholder="Buscar guitarras, amplificadores, micrófonos..."
                                 aria-label="Buscar productos"
+                                value={busqueda}
+                                onChange={(e) => setBusqueda(e.target.value)}
                             />
                             <button
                                 className="btn btn-outline-light px-3"

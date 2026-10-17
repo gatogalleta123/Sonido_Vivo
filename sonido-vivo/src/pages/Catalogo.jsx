@@ -1,14 +1,17 @@
 import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import ProductoCard from "../components/ProductoCard.jsx";
 import { obtenerProductos, obtenerCategorias } from "../data/productos.js";
 import { agregarAlCarritoStorage } from "../utils/carritoStorage.js";
 
 export default function Catalogo() {
+    const [searchParams] = useSearchParams();
+    const busquedaURL = searchParams.get("busqueda") ?? "";
     const [productos, setProductos] = useState([]);
     const [categorias, setCategorias] = useState([]);
 
     // Estados para filtros
-    const [busqueda, setBusqueda] = useState("");
+    const [busqueda, setBusqueda] = useState(busquedaURL);
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas");
     const [orden, setOrden] = useState("defecto");
 
@@ -19,6 +22,10 @@ export default function Catalogo() {
         setProductos(obtenerProductos());
         setCategorias(obtenerCategorias());
     }, []);
+
+    useEffect(() => {
+        setBusqueda(busquedaURL);
+    }, [busquedaURL]);
 
     // Filtrar y ordenar productos de forma optimizada
     const productosFiltrados = useMemo(() => {
