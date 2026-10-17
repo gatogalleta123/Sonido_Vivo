@@ -4,7 +4,9 @@ import {
     obtenerProductoPorCodigo,
     obtenerProductos,
 } from "../data/productos.js";
+import { agregarAlCarritoStorage } from "../utils/carritoStorage.js";
 import ProductoCard from "../components/ProductoCard.jsx";
+import ToastPopup from "../components/ToastPopup.jsx";
 
 export default function DetalleProducto() {
     const { codigo } = useParams();
@@ -69,10 +71,8 @@ export default function DetalleProducto() {
     };
 
     const handleAgregarAlCarrito = () => {
+        agregarAlCarritoStorage(producto, cantidad);
         setMensajeToast(`¡Agregaste ${cantidad} unidad(es) de ${producto.nombre} al carrito!`);
-        setTimeout(() => {
-            setMensajeToast("");
-        }, 3000);
     };
 
     return (
@@ -94,15 +94,11 @@ export default function DetalleProducto() {
                 </ol>
             </nav>
 
-            {/* Toast flotante de confirmación */}
-            {mensajeToast && (
-                <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 1100 }}>
-                    <div className="alert alert-success shadow-lg d-flex align-items-center gap-2 mb-0" role="alert">
-                        <span>✅</span>
-                        <div>{mensajeToast}</div>
-                    </div>
-                </div>
-            )}
+            <ToastPopup
+                mensaje={mensajeToast}
+                tipo="success"
+                onClose={() => setMensajeToast("")}
+            />
 
             {/* Ficha Principal del Producto */}
             <div className="card shadow-sm border-0 rounded-3 overflow-hidden bg-white mb-5">
@@ -217,7 +213,8 @@ export default function DetalleProducto() {
                                     onClick={handleAgregarAlCarrito}
                                     disabled={producto.stock === 0}
                                 >
-                                    🛒 Añadir al carrito
+                                    <i className="bi bi-cart-plus me-2" aria-hidden="true"></i>
+                                    Añadir al carrito
                                 </button>
                                 <Link
                                     to="/catalogo"

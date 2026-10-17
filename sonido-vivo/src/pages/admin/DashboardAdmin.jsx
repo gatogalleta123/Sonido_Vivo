@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import KpiCard from "../../components/ui/KpiCard.jsx";
+import KpiCard from "../../components/KpiCard.jsx";
 import { obtenerProductos } from "../../data/productos.js";
 import { obtenerUsuarios } from "../../data/usuarios.js";
 
@@ -111,4 +111,3 @@ export default function DashboardAdmin() {
         </div>
     );
 }
-

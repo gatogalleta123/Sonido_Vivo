@@ -1,20 +1,40 @@
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+    const [sesion, setSesion] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const actualizarSesion = () => {
+            const guardada = localStorage.getItem("sonidoVivo_sesion");
+            setSesion(guardada ? JSON.parse(guardada) : null);
+        };
+
+        actualizarSesion();
+        window.addEventListener("sesionActualizada", actualizarSesion);
+        return () => window.removeEventListener("sesionActualizada", actualizarSesion);
+    }, []);
+
     // Función auxiliar para gestionar la clase CSS 'active' dinámicamente
     const navLinkClass = ({ isActive }) =>
         isActive
             ? "nav-link px-3 text-warning fw-bold border-bottom border-warning"
             : "nav-link px-3 text-white";
 
+    const cerrarSesion = () => {
+        localStorage.removeItem("sonidoVivo_sesion");
+        window.dispatchEvent(new Event("sesionActualizada"));
+        navigate("/");
+    };
+
     return (
         <nav className="navbar navbar-expand-lg site-nav shadow-sm">
             <div className="container">
 
                 {/* Botón Toggler para dispositivos móviles */}
-                
                 <button
-                    className="navbar-toggler border-light my-1"
+                    className="navbar-toggler border-0 p-0 my-1 shadow-none"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarPrincipal"
@@ -22,10 +42,7 @@ export default function Navbar() {
                     aria-expanded="false"
                     aria-label="Toggle navigation"
                 >
-                    <span 
-                        className="navbar-toggler-icon" 
-                        style={{ filter: "invert(1) grayscale(100%) brightness(200%)" }}
-                    ></span>
+                    <i className="bi bi-list fs-1 text-white" aria-hidden="true"></i>
                 </button>
 
                 {/* Menú colapsable */}
@@ -65,11 +82,49 @@ export default function Navbar() {
 
                     </ul>
 
-                    {/* Enlace directo al Panel Administrativo */}
-                    <div className="d-flex">
-                        <NavLink to="/admin" className="btn btn-outline-warning btn-sm">
-                            🛡️ Panel Admin
-                        </NavLink>
+                    <div className="d-flex flex-column flex-lg-row align-items-lg-center gap-2 ms-lg-auto py-2 py-lg-0">
+                        {sesion ? (
+                            <>
+                                <span className="text-white-50 small px-3">
+                                    <i className="bi bi-person-circle me-2" aria-hidden="true"></i>
+                                    {sesion.nombre}
+                                </span>
+                                {(sesion.rol === "administrador" || sesion.rol === "vendedor") && (
+                                    <NavLink
+                                        to="/admin"
+                                        className="btn btn-outline-warning btn-sm"
+                                    >
+                                        <i className="bi bi-shield-lock me-1" aria-hidden="true"></i>
+                                        Panel Admin
+                                    </NavLink>
+                                )}
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-light btn-sm"
+                                    onClick={cerrarSesion}
+                                >
+                                    <i className="bi bi-box-arrow-right me-1" aria-hidden="true"></i>
+                                    Cerrar Sesión
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <NavLink
+                                    to="/login"
+                                    className="btn btn-outline-light btn-sm"
+                                >
+                                    <i className="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i>
+                                    Iniciar Sesión
+                                </NavLink>
+                                <NavLink
+                                    to="/registro"
+                                    className="btn btn-warning btn-sm fw-bold"
+                                >
+                                    <i className="bi bi-person-plus me-1" aria-hidden="true"></i>
+                                    Crear Cuenta
+                                </NavLink>
+                            </>
+                        )}
                     </div>
 
                 </div>

@@ -1,4 +1,4 @@
-import FormRegistro from "../components/forms/FormRegistro.jsx";
+import FormRegistro from "../components/FormRegistro.jsx";
 
 export default function Registro() {
     return (
@@ -15,7 +15,7 @@ export default function Registro() {
                                     "linear-gradient(135deg, var(--color-fondo-oscuro) 0%, var(--color-primario) 100%)",
                             }}
                         >
-                            <span className="fs-1">🎵</span>
+                            <i className="bi bi-music-note-beamed fs-1" aria-hidden="true"></i>
                             <h3 className="fw-bold mt-2 mb-1">Crea tu cuenta en Sonido Vivo</h3>
                             <p className="small mb-0 text-white-50">
                                 Únete para realizar compras más rápidas, seguir tus pedidos y recibir promociones exclusivas.

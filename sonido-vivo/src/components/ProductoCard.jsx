@@ -49,7 +49,7 @@ export default function ProductoCard({ producto, onAgregarAlCarrito }) {
                         <div className="d-flex justify-content-between align-items-center mb-3">
                             <span className="text-muted small">Precio:</span>
                             <span className="fs-5 fw-bold text-success">
-                                \${producto.precio.toLocaleString("es-CL")}
+                                ${producto.precio.toLocaleString("es-CL")}
                             </span>
                         </div>
 
@@ -60,7 +60,8 @@ export default function ProductoCard({ producto, onAgregarAlCarrito }) {
                                 className="btn btn-warning btn-sm fw-bold"
                                 onClick={() => onAgregarAlCarrito && onAgregarAlCarrito(producto)}
                             >
-                                🛒 Añadir al carrito
+                                <i className="bi bi-cart-plus me-2" aria-hidden="true"></i>
+                                Añadir al carrito
                             </button>
 
                             <Link

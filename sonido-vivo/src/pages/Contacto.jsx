@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { validarCorreo, validarTexto } from "../utils/validaciones.js";
+import ToastPopup from "../components/ToastPopup.jsx";
 
 export default function Contacto() {
     const [formData, setFormData] = useState({
@@ -74,10 +75,7 @@ export default function Contacto() {
 
             {/* Encabezado */}
             <div className="bg-white p-4 p-md-5 rounded-3 shadow-sm mb-5 border text-center">
-                <span className="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-2">
-                    Atención al Cliente
-                </span>
-                <h1 className="display-5 fw-bold mb-3" style={{ color: "var(--color-purpura-profundo)" }}>
+                <h1 className="display-5 fw-bold mb-3" style={{ color: "var(--color-primario-vibrante)" }}>
                     Contacta a Sonido Vivo
                 </h1>
                 <p className="lead text-muted mx-auto" style={{ maxWidth: "700px" }}>
@@ -91,21 +89,6 @@ export default function Contacto() {
                 <div className="col-12 col-lg-7">
                     <div className="card shadow-sm border-0 bg-white p-4 p-md-5">
                         <h4 className="fw-bold mb-4 text-dark">Enviar un Mensaje</h4>
-
-                        {/* Alerta de Resultado */}
-                        {mensajeResultado && (
-                            <div
-                                className={`alert alert-${mensajeResultado.tipo} alert-dismissible fade show mb-4`}
-                                role="alert"
-                            >
-                                {mensajeResultado.texto}
-                                <button
-                                    type="button"
-                                    className="btn-close"
-                                    onClick={() => setMensajeResultado(null)}
-                                ></button>
-                            </div>
-                        )}
 
                         <form onSubmit={handleSubmit} noValidate>
 
@@ -179,7 +162,8 @@ export default function Contacto() {
 
                             <div className="d-grid">
                                 <button type="submit" className="btn btn-warning btn-lg fw-bold shadow-sm">
-                                    ✉️ Enviar Formulario
+                                    <i className="bi bi-envelope me-2" aria-hidden="true"></i>
+                                    Enviar Formulario
                                 </button>
                             </div>
 
@@ -194,7 +178,7 @@ export default function Contacto() {
                             <h4 className="fw-bold mb-4 text-dark">Información de Contacto</h4>
 
                             <div className="d-flex align-items-start gap-3 mb-4">
-                                <span className="fs-2 text-primary">📍</span>
+                                <i className="bi bi-geo-alt fs-2 text-primary" aria-hidden="true"></i>
                                 <div>
                                     <h6 className="fw-bold mb-1">Casa Matriz - Providencia</h6>
                                     <p className="text-muted small mb-0">
@@ -204,7 +188,7 @@ export default function Contacto() {
                             </div>
 
                             <div className="d-flex align-items-start gap-3 mb-4">
-                                <span className="fs-2 text-primary">📞</span>
+                                <i className="bi bi-telephone fs-2 text-primary" aria-hidden="true"></i>
                                 <div>
                                     <h6 className="fw-bold mb-1">Teléfonos de Atención</h6>
                                     <p className="text-muted small mb-0">+56 2 2345 6789</p>
@@ -213,7 +197,7 @@ export default function Contacto() {
                             </div>
 
                             <div className="d-flex align-items-start gap-3 mb-4">
-                                <span className="fs-2 text-primary">✉️</span>
+                                <i className="bi bi-envelope fs-2 text-primary" aria-hidden="true"></i>
                                 <div>
                                     <h6 className="fw-bold mb-1">Correo Electrónico</h6>
                                     <p className="text-muted small mb-0">contacto@sonidovivo.cl</p>
@@ -222,7 +206,7 @@ export default function Contacto() {
                             </div>
 
                             <div className="d-flex align-items-start gap-3 mb-4">
-                                <span className="fs-2 text-primary">⏰</span>
+                                <i className="bi bi-clock fs-2 text-primary" aria-hidden="true"></i>
                                 <div>
                                     <h6 className="fw-bold mb-1">Horario de Atención</h6>
                                     <p className="text-muted small mb-0">Lunes a Viernes: 10:00 - 19:00 hrs</p>
@@ -253,7 +237,11 @@ export default function Contacto() {
 
             </div>
 
+            <ToastPopup
+                mensaje={mensajeResultado?.texto}
+                tipo={mensajeResultado?.tipo}
+                onClose={() => setMensajeResultado(null)}
+            />
         </div>
     );
 }
-

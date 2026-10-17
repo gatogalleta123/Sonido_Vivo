@@ -5,6 +5,14 @@ import {
     eliminarUsuario,
     guardarUsuarios,
 } from "../../data/usuarios.js";
+import ToastPopup from "../../components/ToastPopup.jsx";
+import {
+    normalizarRut,
+    validarCorreo,
+    validarRut,
+    validarTelefono,
+    validarTexto,
+} from "../../utils/validaciones.js";
 
 export default function AdminUsuarios() {
     const [usuarios, setUsuarios] = useState([]);
@@ -63,22 +71,44 @@ export default function AdminUsuarios() {
 
     const handleAbrirEditar = (u) => {
         setModoEdicion(true);
-        setFormData({ ...u });
+        setFormData({ ...estadoInicialForm, ...u, rut: normalizarRut(u.rut) });
         setErroresForm({});
         setMostrarModal(true);
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({
+            ...prev,
+            [name]: name === "rut" ? normalizarRut(value) : value,
+        }));
     };
 
     const validarFormulario = () => {
         const errores = {};
-        if (!formData.rut.trim()) errores.rut = "El RUT/RUN es obligatorio.";
-        if (!formData.nombre.trim()) errores.nombre = "El nombre es obligatorio.";
-        if (!formData.apellidos.trim()) errores.apellidos = "Los apellidos son obligatorios.";
-        if (!formData.correo.trim()) errores.correo = "El correo electrónico es obligatorio.";
+        if (!validarRut(formData.rut)) errores.rut = "Ingresa un RUT/RUN válido.";
+        if (!validarTexto(formData.nombre, 2)) errores.nombre = "Ingresa un nombre de al menos 2 caracteres.";
+        if (!validarTexto(formData.apellidos, 2)) errores.apellidos = "Ingresa apellidos de al menos 2 caracteres.";
+        if (!validarCorreo(formData.correo)) errores.correo = "Ingresa un correo electrónico válido.";
+        if (formData.telefono?.trim() && !validarTelefono(formData.telefono)) {
+            errores.telefono = "Ingresa un teléfono válido con al menos 8 dígitos.";
+        }
+        if (formData.comuna?.trim() && !validarTexto(formData.comuna, 2)) {
+            errores.comuna = "La comuna debe tener al menos 2 caracteres.";
+        }
+        if (!["cliente", "vendedor", "administrador"].includes(formData.rol)) {
+            errores.rol = "Selecciona un rol válido.";
+        }
+        if (!["activo", "inactivo"].includes(formData.estado)) {
+            errores.estado = "Selecciona un estado válido.";
+        }
+        if (![
+            "Región Metropolitana de Santiago",
+            "Región de Valparaíso",
+            "Región del Bío Bío",
+        ].includes(formData.region)) {
+            errores.region = "Selecciona una región válida.";
+        }
 
         setErroresForm(errores);
         return Object.keys(errores).length === 0;
@@ -90,28 +120,46 @@ export default function AdminUsuarios() {
 
         try {
             const listaActual = obtenerUsuarios();
+            const usuario = {
+                ...formData,
+                rut: normalizarRut(formData.rut),
+                nombre: formData.nombre.trim(),
+                apellidos: formData.apellidos.trim(),
+                correo: formData.correo.trim().toLowerCase(),
+                telefono: (formData.telefono ?? "").trim(),
+                comuna: (formData.comuna ?? "").trim(),
+            };
+            const correoRegistrado = listaActual.some(
+                (u) =>
+                    u.correo.toLowerCase() === usuario.correo &&
+                    normalizarRut(u.rut) !== usuario.rut
+            );
+
+            if (correoRegistrado) {
+                setErroresForm({ correo: "El correo ya se encuentra registrado en el sistema." });
+                return;
+            }
 
             if (modoEdicion) {
                 const actualizada = listaActual.map((u) =>
-                    u.rut === formData.rut ? { ...formData } : u
+                    normalizarRut(u.rut) === usuario.rut ? usuario : u
                 );
                 guardarUsuarios(actualizada);
-                setMensaje({ tipo: "success", texto: `Usuario ${formData.rut} actualizado exitosamente.` });
+                setMensaje({ tipo: "success", texto: `Usuario ${usuario.rut} actualizado exitosamente.` });
             } else {
-                const existe = listaActual.some((u) => u.rut === formData.rut);
+                const existe = listaActual.some((u) => normalizarRut(u.rut) === usuario.rut);
                 if (existe) {
                     setErroresForm({ rut: "El RUT ya se encuentra registrado en el sistema." });
                     return;
                 }
-                crearUsuario(formData);
-                setMensaje({ tipo: "success", texto: `Usuario ${formData.rut} creado correctamente.` });
+                crearUsuario(usuario);
+                setMensaje({ tipo: "success", texto: `Usuario ${usuario.rut} creado correctamente.` });
             }
 
             cargarUsuarios();
             setMostrarModal(false);
-            setTimeout(() => setMensaje(null), 3000);
         } catch (err) {
-            setMensaje({ tipo: "danger", texto: "Ocurrió un error al guardar el registro." });
+            setMensaje({ tipo: "danger", texto: err.message || "Ocurrió un error al guardar el registro." });
         }
     };
 
@@ -128,7 +176,6 @@ export default function AdminUsuarios() {
             tipo: "info",
             texto: `Estado del usuario ${rut} actualizado a: ${nuevoEstado}.`,
         });
-        setTimeout(() => setMensaje(null), 3000);
     };
 
     // Eliminar usuario
@@ -137,7 +184,6 @@ export default function AdminUsuarios() {
             eliminarUsuario(rut);
             cargarUsuarios();
             setMensaje({ tipo: "warning", texto: `Usuario ${rut} eliminado.` });
-            setTimeout(() => setMensaje(null), 3000);
         }
     };
 
@@ -157,13 +203,11 @@ export default function AdminUsuarios() {
                 </button>
             </div>
 
-            {/* Alerta de Notificación */}
-            {mensaje && (
-                <div className={`alert alert-${mensaje.tipo} alert-dismissible fade show shadow-sm`} role="alert">
-                    {mensaje.texto}
-                    <button type="button" className="btn-close" onClick={() => setMensaje(null)}></button>
-                </div>
-            )}
+            <ToastPopup
+                mensaje={mensaje?.texto}
+                tipo={mensaje?.tipo}
+                onClose={() => setMensaje(null)}
+            />
 
             {/* Filtros de Búsqueda */}
             <div className="card shadow-sm border-0 bg-white p-3 mb-4">
@@ -372,6 +416,7 @@ export default function AdminUsuarios() {
                                                 value={formData.telefono}
                                                 onChange={handleChange}
                                             />
+                                            {erroresForm.telefono && <div className="invalid-feedback d-block">{erroresForm.telefono}</div>}
                                         </div>
 
                                         {/* Rol */}
@@ -387,6 +432,7 @@ export default function AdminUsuarios() {
                                                 <option value="vendedor">Vendedor (Staff)</option>
                                                 <option value="administrador">Administrador (Acceso Total)</option>
                                             </select>
+                                            {erroresForm.rol && <div className="invalid-feedback d-block">{erroresForm.rol}</div>}
                                         </div>
 
                                         {/* Estado */}
@@ -401,13 +447,14 @@ export default function AdminUsuarios() {
                                                 <option value="activo">Activo (Habilitado)</option>
                                                 <option value="inactivo">Inactivo (Deshabilitado)</option>
                                             </select>
+                                            {erroresForm.estado && <div className="invalid-feedback d-block">{erroresForm.estado}</div>}
                                         </div>
 
                                         {/* Región */}
                                         <div className="col-md-6">
                                             <label className="form-label small fw-bold">Región</label>
                                             <select
-                                                className="form-select"
+                                                className={`form-select ${erroresForm.region ? "is-invalid" : ""}`}
                                                 name="region"
                                                 value={formData.region}
                                                 onChange={handleChange}
@@ -416,6 +463,7 @@ export default function AdminUsuarios() {
                                                 <option value="Región de Valparaíso">Región de Valparaíso</option>
                                                 <option value="Región del Bío Bío">Región del Bío Bío</option>
                                             </select>
+                                            {erroresForm.region && <div className="invalid-feedback">{erroresForm.region}</div>}
                                         </div>
 
                                         {/* Comuna */}
@@ -423,11 +471,12 @@ export default function AdminUsuarios() {
                                             <label className="form-label small fw-bold">Comuna</label>
                                             <input
                                                 type="text"
-                                                className="form-control"
                                                 name="comuna"
                                                 value={formData.comuna}
                                                 onChange={handleChange}
+                                                className={`form-control ${erroresForm.comuna ? "is-invalid" : ""}`}
                                             />
+                                            {erroresForm.comuna && <div className="invalid-feedback">{erroresForm.comuna}</div>}
                                         </div>
 
                                     </div>

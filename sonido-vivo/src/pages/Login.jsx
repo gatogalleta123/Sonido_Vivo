@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { obtenerUsuarios } from "../data/usuarios.js";
+import ToastPopup from "../components/ToastPopup.jsx";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -76,7 +77,7 @@ export default function Login() {
                                     "linear-gradient(135deg, var(--color-fondo-oscuro) 0%, var(--color-primario) 100%)",
                             }}
                         >
-                            <span className="fs-1">🎵</span>
+                            <i className="bi bi-music-note-beamed fs-1" aria-hidden="true"></i>
                             <h3 className="fw-bold mt-2 mb-1">Sonido Vivo</h3>
                             <p className="small mb-0 text-white-50">
                                 Inicia sesión para gestionar tus compras o tienda
@@ -84,17 +85,6 @@ export default function Login() {
                         </div>
 
                         <div className="card-body p-4 p-md-5">
-
-                            {/* Alerta de Error */}
-                            {error && (
-                                <div
-                                    className="alert alert-danger d-flex align-items-center gap-2 mb-4"
-                                    role="alert"
-                                >
-                                    <span>⚠️</span>
-                                    <div className="small fw-semibold">{error}</div>
-                                </div>
-                            )}
 
                             <form onSubmit={handleLogin}>
 
@@ -148,7 +138,7 @@ export default function Login() {
                                         type="submit"
                                         className="btn btn-warning btn-lg fw-bold shadow-sm"
                                     >
-                                        🔐 Iniciar Sesión
+                                        Iniciar Sesión
                                     </button>
                                 </div>
 
@@ -189,6 +179,11 @@ export default function Login() {
 
                 </div>
             </div>
+            <ToastPopup
+                mensaje={error}
+                tipo="danger"
+                onClose={() => setError("")}
+            />
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
-import LayoutPrincipal from "./layouts/LayoutPrincipal.jsx";
-import LayoutAdmin from "./layouts/LayoutAdmin.jsx";
-import RutaProtegida from "./components/auth/RutaProtegida.jsx";
+import LayoutPrincipal from "./components/layout/LayoutPrincipal.jsx";
+import LayoutAdmin from "./components/layout/LayoutAdmin.jsx";
+import RutaProtegida from "./components/RutaProtegida.jsx";
 
 import Inicio from "./pages/Inicio.jsx";
 import Catalogo from "./pages/Catalogo.jsx";

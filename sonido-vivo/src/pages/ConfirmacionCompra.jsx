@@ -155,7 +155,11 @@ export default function ConfirmacionCompra() {
                             <div className="mb-3">
                                 <small className="text-muted d-block fw-bold text-uppercase">Método de Envío</small>
                                 <span className="fw-semibold text-dark">
-                                    {cliente.metodoDespacho === "domicilio" ? "🚚 Despacho a Domicilio" : "📍 Retiro en Tienda"}
+                                    <i
+                                        className={`bi ${cliente.metodoDespacho === "domicilio" ? "bi-truck" : "bi-geo-alt"} me-2`}
+                                        aria-hidden="true"
+                                    ></i>
+                                    {cliente.metodoDespacho === "domicilio" ? "Despacho a Domicilio" : "Retiro en Tienda"}
                                 </span>
                                 {cliente.metodoDespacho === "domicilio" ? (
                                     <div className="small text-muted mt-1">

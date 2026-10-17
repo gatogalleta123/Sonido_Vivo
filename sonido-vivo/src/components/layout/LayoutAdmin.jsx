@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import SidebarAdmin from "../components/layout/SidebarAdmin.jsx";
+import SidebarAdmin from "./SidebarAdmin.jsx";
 
 export default function LayoutAdmin() {
     return (

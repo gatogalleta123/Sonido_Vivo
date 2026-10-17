@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { obtenerUsuarios, crearUsuario } from "../../data/usuarios.js";
+import { obtenerUsuarios, crearUsuario } from "../data/usuarios.js";
+import ToastPopup from "./ToastPopup.jsx";
 
 export default function FormRegistro() {
     const navigate = useNavigate();
@@ -86,26 +87,23 @@ export default function FormRegistro() {
                 navigate("/login");
             }, 2000);
         } catch (error) {
-            setErrores({ general: "Ocurrió un error al registrar la cuenta." });
+            setErrores({
+                general: error.message || "Ocurrió un error al registrar la cuenta.",
+            });
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
 
-            {mensajeExito && (
-                <div className="alert alert-success d-flex align-items-center gap-2 mb-4" role="alert">
-                    <span>✅</span>
-                    <div className="fw-semibold small">{mensajeExito}</div>
-                </div>
-            )}
-
-            {errores.general && (
-                <div className="alert alert-danger d-flex align-items-center gap-2 mb-4" role="alert">
-                    <span>⚠️</span>
-                    <div className="fw-semibold small">{errores.general}</div>
-                </div>
-            )}
+            <ToastPopup
+                mensaje={mensajeExito || errores.general}
+                tipo={mensajeExito ? "success" : "danger"}
+                onClose={() => {
+                    setMensajeExito("");
+                    setErrores((actuales) => ({ ...actuales, general: "" }));
+                }}
+            />
 
             <div className="row g-3">
                 {/* RUT */}
@@ -253,7 +251,7 @@ export default function FormRegistro() {
 
             <div className="d-grid mt-4">
                 <button type="submit" className="btn btn-warning btn-lg fw-bold shadow-sm">
-                    📝 Registrar mi Cuenta
+                    Registrar mi Cuenta
                 </button>
             </div>
 

@@ -25,10 +25,7 @@ export default function Nosotros() {
 
             {/* Encabezado */}
             <div className="bg-white p-4 p-md-5 rounded-3 shadow-sm mb-5 border text-center">
-                <span className="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-2">
-                    Sobre Nosotros
-                </span>
-                <h1 className="display-5 fw-bold mb-3" style={{ color: "var(--color-purpura-profundo)" }}>
+                <h1 className="display-5 fw-bold mb-3" style={{ color: "var(--color-primario-vibrante)" }}>
                     Pasión por la Música y el Sonido Profesional
                 </h1>
                 <p className="lead text-muted mx-auto" style={{ maxWidth: "800px" }}>
@@ -73,7 +70,8 @@ export default function Nosotros() {
             <div className="bg-white p-4 p-md-5 rounded-3 shadow-sm border mb-5">
                 <div className="text-center mb-5">
                     <h2 className="fw-bold mb-2" style={{ color: "var(--color-purpura-profundo)" }}>
-                        📍 Nuestras Tiendas Físicas y Puntos de Retiro
+                        <i className="bi bi-geo-alt me-2" aria-hidden="true"></i>
+                        Nuestras Tiendas Físicas y Puntos de Retiro
                     </h2>
                     <p className="text-muted">
                         Visítanos para probar tus instrumentos o selecciona tu sucursal más cercana para retiro gratuito.
@@ -89,15 +87,15 @@ export default function Nosotros() {
 
                                     <ul className="list-unstyled d-flex flex-column gap-2 text-muted mb-4">
                                         <li className="d-flex align-items-start gap-2">
-                                            <span>📍</span>
+                                            <i className="bi bi-geo-alt text-primary" aria-hidden="true"></i>
                                             <strong>Dirección:</strong> {tienda.direccion}
                                         </li>
                                         <li className="d-flex align-items-center gap-2">
-                                            <span>📞</span>
+                                            <i className="bi bi-telephone text-primary" aria-hidden="true"></i>
                                             <strong>Teléfono:</strong> {tienda.telefono}
                                         </li>
                                         <li className="d-flex align-items-start gap-2">
-                                            <span>⏰</span>
+                                            <i className="bi bi-clock text-primary" aria-hidden="true"></i>
                                             <strong>Horario:</strong> {tienda.horario}
                                         </li>
                                     </ul>
@@ -131,7 +129,8 @@ export default function Nosotros() {
                     Nuestro equipo de especialistas está listo para responder tus consultas técnicas.
                 </p>
                 <Link to="/contacto" className="btn btn-warning btn-lg fw-bold shadow-sm">
-                    ✉️ Enviar un mensaje
+                    <i className="bi bi-envelope me-2" aria-hidden="true"></i>
+                    Enviar un mensaje
                 </Link>
             </div>
 

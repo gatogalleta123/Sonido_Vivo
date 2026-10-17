@@ -22,16 +22,20 @@ export function validarTelefono(telefono) {
     return numeros.length >= 8;
 }
 
+export function normalizarRut(rut) {
+    if (typeof rut !== "string") return "";
+    return rut.replace(/[.\-\s]/g, "");
+}
+
 // 4. Validar RUT/RUN chileno mediante algoritmo Módulo 11
 export function validarRut(rut) {
     if (!rut || typeof rut !== "string") return false;
 
-    // Limpiar puntos, guiones y espacios
-    const rutLimpio = rut.replace(/[^0-9kK]/g, "");
-    if (rutLimpio.length < 8) return false;
+    const rutLimpio = normalizarRut(rut).replace(/\s/g, "").toUpperCase();
+    if (!/^\d{6,8}[0-9K]$/.test(rutLimpio)) return false;
 
     const cuerpo = rutLimpio.slice(0, -1);
-    const dvIngresado = rutLimpio.slice(-1).toUpperCase();
+    const dvIngresado = rutLimpio.slice(-1);
 
     // Algoritmo Módulo 11
     let suma = 0;
@@ -55,6 +59,17 @@ export function validarRut(rut) {
     }
 
     return dvIngresado === dvEsperado;
+}
+
+export function validarUrl(url) {
+    if (!url || typeof url !== "string") return false;
+
+    try {
+        const urlParseada = new URL(url.trim());
+        return ["http:", "https:"].includes(urlParseada.protocol) && Boolean(urlParseada.hostname);
+    } catch {
+        return false;
+    }
 }
 
 // 5. Validar que un conjunto de campos requeridos no estén vacíos

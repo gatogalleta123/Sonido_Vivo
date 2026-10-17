@@ -40,45 +40,68 @@ export default function Inicio() {
         <div className="inicio-container">
             {/* 1. SECCIÓN HERO / BANNER PRINCIPAL */}
             <section
-                className="p-5 mb-5 rounded-4 shadow text-white text-center text-md-start overflow-hidden"
+                className="p-4 p-md-5 mb-5 rounded-4 shadow text-white overflow-hidden"
                 style={{
                     background:
                         "linear-gradient(135deg, var(--color-fondo-oscuro) 0%, var(--color-primario) 100%)",
                 }}
             >
-                <div className="row align-items-center py-3">
-                    <div className="col-lg-8">
-                        <span className="badge bg-warning text-dark mb-3 px-3 py-2 fw-bold text-uppercase">
-                            Lanzamientos 2026
-                        </span>
+                <div className="row align-items-center py-3 g-4">
+
+                    {/* Texto principal */}
+                    <div className="col-lg-7 text-center text-md-start">
                         <h1 className="display-4 fw-bold text-white mb-3">
-                            Siente la pasión por el sonido perfecto
+                            Siente la <span style={{ color: "var(--color-accent)" }}>pasión</span> por el sonido perfecto
                         </h1>
+
                         <p className="lead text-light mb-4">
                             Explora nuestro catálogo de instrumentos musicales, equipos de
                             sonido profesional y accesorios con garantía oficial y despacho
                             a todo Chile.
                         </p>
+
                         <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
                             <Link
                                 to="/catalogo"
                                 className="btn btn-warning btn-lg px-4 fw-bold shadow-sm"
                             >
-                                🎸 Ver Catálogo Completo
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    fill="currentColor"
+                                    viewBox="0 0 16 16"
+                                    className="me-2"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13s1.12-2 2.5-2 2.5.896 2.5 2m9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2" />
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M14 11V2h1v9zM6 3v10H5V3z"
+                                    />
+                                    <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4z" />
+                                </svg>
+
+                                Ver Catálogo Completo
                             </Link>
                         </div>
                     </div>
-                    <div className="col-lg-4 text-center mt-4 mt-lg-0">
-                        <div className="p-4 rounded-circle d-inline-block bg-white bg-opacity-10 border border-light border-opacity-25">
-                            <span
-                                style={{ fontSize: "5rem" }}
-                                role="img"
-                                aria-label="Música"
-                            >
-                                🎶
-                            </span>
-                        </div>
+
+                    {/* Imagen principal */}
+                    <div className="col-lg-5">
+                        <img
+                            src="https://images.unsplash.com/photo-1680695762257-ec0297a4d61b?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+                            alt="Guitarra en un entorno musical"
+                            className="img-fluid rounded-4 shadow"
+                            style={{
+                                width: "100%",
+                                height: "320px",
+                                objectFit: "cover",
+                                objectPosition: "center",
+                            }}
+                        />
                     </div>
+
                 </div>
             </section>
 
@@ -98,7 +121,7 @@ export default function Inicio() {
                     </div>
                     <Link
                         to="/catalogo"
-                        className="btn btn-outline-primary btn-sm fw-bold"
+                        className="btn btn-outline-dark btn-sm fw-bold"
                     >
                         Ver todas →
                     </Link>
@@ -145,7 +168,7 @@ export default function Inicio() {
                     </div>
                     <Link
                         to="/catalogo"
-                        className="btn btn-outline-primary btn-sm fw-bold"
+                        className="btn btn-outline-dark btn-sm fw-bold"
                     >
                         Ver catálogo completo →
                     </Link>

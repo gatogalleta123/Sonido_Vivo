@@ -67,12 +67,9 @@ export default function Blog() {
         <div className="blog-container mb-5">
             {/* Encabezado Principal */}
             <div className="bg-white p-4 p-md-5 rounded-3 shadow-sm mb-4 border text-center">
-                <span className="badge bg-warning text-dark px-3 py-2 fw-bold text-uppercase mb-2">
-                    Novedades & Noticia
-                </span>
                 <h1
                     className="display-5 fw-bold mb-3"
-                    style={{ color: "var(--color-purpura-profundo)" }}
+                    style={{ color: "var(--color-primario-vibrante)" }}
                 >
                     Blog Sonido Vivo
                 </h1>
@@ -125,9 +122,9 @@ export default function Blog() {
                             <div className="col-12 col-lg-7">
                                 <div className="card-body p-4 p-md-5">
                                     <div className="d-flex align-items-center gap-2 text-muted small mb-2">
-                                        <span>📅 {item.fecha}</span>
+                                        <span><i className="bi bi-calendar-event me-1" aria-hidden="true"></i>{item.fecha}</span>
                                         <span>•</span>
-                                        <span>✍️ {item.autor}</span>
+                                        <span><i className="bi bi-pen me-1" aria-hidden="true"></i>{item.autor}</span>
                                     </div>
 
                                     <h3 className="card-title fw-bold text-dark mb-3">
@@ -141,7 +138,7 @@ export default function Blog() {
                                     <div className="d-flex align-items-center justify-content-between pt-2 border-top">
                                         <a
                                             href={item.enlaceLectura}
-                                            className="btn btn-outline-warning fw-bold"
+                                            className="btn btn-outline-dark fw-bold"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >

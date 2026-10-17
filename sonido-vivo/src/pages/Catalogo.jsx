@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProductoCard from "../components/ProductoCard.jsx";
+import ToastPopup from "../components/ToastPopup.jsx";
 import { obtenerProductos, obtenerCategorias } from "../data/productos.js";
 import { agregarAlCarritoStorage } from "../utils/carritoStorage.js";
 
@@ -63,9 +64,6 @@ export default function Catalogo() {
     const handleAgregarAlCarrito = (producto) => {
         agregarAlCarritoStorage(producto);
         setMensajeToast(`¡${producto.nombre} agregado al carrito!`);
-        setTimeout(() => {
-            setMensajeToast("");
-        }, 3000);
     };
 
     return (
@@ -75,8 +73,8 @@ export default function Catalogo() {
             <div className="bg-white p-4 rounded-3 shadow-sm mb-4 border">
                 <div className="row align-items-center">
                     <div className="col-md-6">
-                        <h1 className="fw-bold mb-1" style={{ color: "var(--color-purpura-profundo)" }}>
-                            🎸 Catálogo de Productos
+                        <h1 className="fw-bold mb-1" style={{ color: "var(--color-primario-vibrante)" }}>
+                            Catálogo de Productos
                         </h1>
                         <p className="text-muted m-0">
                             Explora nuestros instrumentos, equipos de sonido y accesorios en stock.
@@ -90,15 +88,11 @@ export default function Catalogo() {
                 </div>
             </div>
 
-            {/* Alerta / Toast flotante al agregar al carrito */}
-            {mensajeToast && (
-                <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 1100 }}>
-                    <div className="alert alert-success shadow-lg d-flex align-items-center gap-2 mb-0" role="alert">
-                        <span>✅</span>
-                        <div>{mensajeToast}</div>
-                    </div>
-                </div>
-            )}
+            <ToastPopup
+                mensaje={mensajeToast}
+                tipo="success"
+                onClose={() => setMensajeToast("")}
+            />
 
             {/* Barra de Filtros y Búsqueda */}
             <div className="card border-0 shadow-sm p-3 mb-4 bg-white">
@@ -176,7 +170,7 @@ export default function Catalogo() {
                         Intenta cambiar los términos de búsqueda o selecciona otra categoría.
                     </p>
                     <button
-                        className="btn btn-outline-primary btn-sm fw-bold mt-2"
+                        className="btn btn-outline-dark btn-sm fw-bold mt-2"
                         onClick={() => {
                             setBusqueda("");
                             setCategoriaSeleccionada("Todas");

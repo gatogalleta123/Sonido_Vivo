@@ -234,7 +234,8 @@ export default function Checkout() {
                                                 onChange={handleChange}
                                             />
                                             <label className="form-check-label fw-bold ms-2" htmlFor="retiroTienda">
-                                                📍 Retiro Gratuito en Tienda (\$0)
+                                                <i className="bi bi-geo-alt me-1" aria-hidden="true"></i>
+                                                Retiro Gratuito en Tienda (\$0)
                                             </label>
                                             <small className="text-muted d-block ms-4">Disponible en Providencia o Viña del Mar.</small>
                                         </div>
@@ -295,8 +296,9 @@ export default function Checkout() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="alert alert-info mb-0">
-                                        📍 <strong>Punto de Retiro Seleccionado:</strong> Sucursal Av. Providencia 1234, Santiago. Recibirás un correo cuando tu pedido esté listo para ser retirado.
+                                    <div className="rounded bg-info-subtle border border-info-subtle p-3 mb-0">
+                                        <i className="bi bi-geo-alt me-1" aria-hidden="true"></i>
+                                        <strong>Punto de Retiro Seleccionado:</strong> Sucursal Av. Providencia 1234, Santiago. Recibirás un correo cuando tu pedido esté listo para ser retirado.
                                     </div>
                                 )}
 

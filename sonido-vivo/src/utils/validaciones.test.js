@@ -3,6 +3,8 @@ import {
     validarCorreo,
     validarTexto,
     validarRut,
+    normalizarRut,
+    validarUrl,
 } from "./validaciones.js";
 
 describe("Pruebas Unitarias: Módulo de Validaciones", () => {
@@ -31,5 +33,18 @@ describe("Pruebas Unitarias: Módulo de Validaciones", () => {
         expect(validarRut("12345678-5")).toBe(true);
         // RUTs falsos o mal calculados
         expect(validarRut("12.345.678-0")).toBe(false);
+        expect(validarRut("12345678K")).toBe(false);
+        expect(validarRut("123456789012345-0")).toBe(false);
+    });
+
+    it("normalizarRut: elimina puntos y guiones del RUT ingresado", () => {
+        expect(normalizarRut("12.345.678-K")).toBe("12345678K");
+        expect(normalizarRut("12 345 678-K")).toBe("12345678K");
+    });
+
+    it("validarUrl: acepta URLs web válidas y rechaza esquemas no web", () => {
+        expect(validarUrl("https://sonidovivo.cl/imagen.jpg")).toBe(true);
+        expect(validarUrl("javascript:alert(1)")).toBe(false);
+        expect(validarUrl("no es una url")).toBe(false);
     });
 });

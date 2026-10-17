@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
-import Header from "../components/layout/Header.jsx";
-import Navbar from "../components/layout/Navbar.jsx";
-import Footer from "../components/layout/Footer.jsx";
+import Header from "./Header.jsx";
+import Navbar from "./Navbar.jsx";
+import Footer from "./Footer.jsx";
 
 export default function LayoutPrincipal() {
     return (

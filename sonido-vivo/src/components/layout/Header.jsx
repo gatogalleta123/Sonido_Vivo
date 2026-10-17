@@ -1,21 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { obtenerProductos } from "../../data/productos.js";
 import { obtenerCarrito } from "../../utils/carritoStorage.js";
 
 export default function Header() {
     const navigate = useNavigate();
     const [carrito, setCarrito] = useState([]);
-    const [sesion, setSesion] = useState(null);
     const [busqueda, setBusqueda] = useState("");
 
-    // Cargar el carrito, la sesión y escuchar actualizaciones
+    // Cargar el carrito y escuchar actualizaciones
     useEffect(() => {
         const actualizarDatos = () => {
             setCarrito(obtenerCarrito());
-            
-            // Leer sesión de localStorage
-            const sesionGuardada = localStorage.getItem("sonidoVivo_sesion");
-            setSesion(sesionGuardada ? JSON.parse(sesionGuardada) : null);
         };
 
         // Cargar estado inicial
@@ -23,11 +19,9 @@ export default function Header() {
 
         // Escuchar eventos personalizados
         window.addEventListener("carritoActualizado", actualizarDatos);
-        window.addEventListener("sesionActualizada", actualizarDatos);
 
         return () => {
             window.removeEventListener("carritoActualizado", actualizarDatos);
-            window.removeEventListener("sesionActualizada", actualizarDatos);
         };
     }, []);
 
@@ -36,17 +30,23 @@ export default function Header() {
         0
     );
 
-    const handleCerrarSesion = () => {
-        localStorage.removeItem("sonidoVivo_sesion");
-        // Disparar evento para que el Header se actualice al instante
-        window.dispatchEvent(new Event("sesionActualizada"));
-        navigate("/");
-    };
+    const resultadosBusqueda = useMemo(() => {
+        const termino = busqueda.trim().toLocaleLowerCase("es-CL");
+        if (!termino) return [];
+
+        return obtenerProductos()
+            .filter((producto) =>
+                [producto.nombre, producto.marca, producto.modelo, producto.codigo, producto.categoria]
+                    .some((dato) => dato.toLocaleLowerCase("es-CL").includes(termino))
+            )
+            .slice(0, 5);
+    }, [busqueda]);
 
     const handleBuscar = (e) => {
         e.preventDefault();
         const termino = busqueda.trim();
         navigate(termino ? `/catalogo?busqueda=${encodeURIComponent(termino)}` : "/catalogo");
+        setBusqueda("");
     };
 
     return (
@@ -55,97 +55,105 @@ export default function Header() {
                 <div className="row align-items-center g-3">
 
                     {/* Brand / Logo */}
-                    <div className="col-12 col-md-3 text-center text-md-start">
+                    <div className="d-none d-lg-block col-lg-3 text-center text-lg-start">
                         <Link
                             to="/"
                             className="text-decoration-none d-inline-flex align-items-center gap-2"
                         >
                             <span className="fs-3 fw-bold text-white">
-                                🎵 Sonido Vivo
+                                <i className="bi bi-music-note-beamed me-2" aria-hidden="true"></i>
+                                Sonido Vivo
                             </span>
                         </Link>
                     </div>
 
                     {/* Buscador Rápido */}
-                    <div className="col-12 col-md-5">
-                        <form
-                            className="d-flex"
-                            onSubmit={handleBuscar}
-                        >
-                            <input
-                                type="search"
-                                className="form-control me-2"
-                                placeholder="Buscar guitarras, amplificadores, micrófonos..."
-                                aria-label="Buscar productos"
-                                value={busqueda}
-                                onChange={(e) => setBusqueda(e.target.value)}
-                            />
-                            <button
-                                className="btn btn-outline-light px-3"
-                                type="submit"
-                            >
+                    <div className="col-9 col-lg-6">
+                        <form className="d-flex w-100 position-relative" onSubmit={handleBuscar}>
+                            <div className="position-relative flex-grow-1">
+                                <input
+                                    type="search"
+                                    className="form-control"
+                                    placeholder="Buscar guitarras, amplificadores, micrófonos..."
+                                    aria-label="Buscar productos"
+                                    aria-controls="resultados-busqueda-header"
+                                    aria-expanded={Boolean(busqueda.trim())}
+                                    value={busqueda}
+                                    onChange={(e) => setBusqueda(e.target.value)}
+                                />
+                                {busqueda.trim() && (
+                                    <div
+                                        id="resultados-busqueda-header"
+                                        className="position-absolute top-100 start-0 w-100 bg-white rounded-3 shadow mt-1 overflow-hidden"
+                                        style={{ zIndex: 1080 }}
+                                    >
+                                        {resultadosBusqueda.length > 0 ? (
+                                            <>
+                                                {resultadosBusqueda.map((producto) => (
+                                                    <Link
+                                                        key={producto.codigo}
+                                                        to={`/detalle-producto/${encodeURIComponent(producto.codigo)}`}
+                                                        className="d-flex align-items-center gap-3 p-2 text-decoration-none text-dark border-bottom"
+                                                        onClick={() => setBusqueda("")}
+                                                    >
+                                                        <img
+                                                            src={producto.imagen}
+                                                            alt=""
+                                                            className="rounded"
+                                                            style={{ width: "44px", height: "44px", objectFit: "cover" }}
+                                                        />
+                                                        <span className="flex-grow-1 overflow-hidden">
+                                                            <span className="d-block fw-semibold text-truncate">
+                                                                {producto.nombre}
+                                                            </span>
+                                                            <small className="text-muted">
+                                                                {producto.marca} · {producto.precio.toLocaleString("es-CL", {
+                                                                    style: "currency",
+                                                                    currency: "CLP",
+                                                                    maximumFractionDigits: 0,
+                                                                })}
+                                                            </small>
+                                                        </span>
+                                                    </Link>
+                                                ))}
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-light w-100 rounded-0 fw-semibold"
+                                                >
+                                                    Ver todos los resultados
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <p className="text-muted small mb-0 p-3">
+                                                No se encontraron productos para “{busqueda.trim()}”.
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                            <button className="btn btn-outline-light px-3 ms-2" type="submit">
+                                <i className="bi bi-search me-1" aria-hidden="true"></i>
                                 Buscar
                             </button>
                         </form>
                     </div>
 
                     {/* Accesos Rápidos */}
-                    <div className="col-12 col-md-4 d-flex justify-content-center justify-content-md-end align-items-center gap-2">
+                    <div className="col-3 col-lg-3 d-flex justify-content-end align-items-center gap-2">
 
-                        {/* Botón Carrito */}
+                        {/* Carrito */}
                         <Link
                             to="/carrito"
-                            className="btn btn-success d-flex align-items-center gap-2 me-2"
+                            className="btn btn-success d-flex align-items-center gap-2 px-2 px-lg-3"
+                            aria-label={`Carrito, ${cantidadProductos} productos`}
                         >
-                            <span>🛒 Carrito</span>
+                            <i className="bi bi-cart3 fs-5" aria-hidden="true"></i>
+                            <span className="d-none d-lg-inline">Carrito</span>
+
                             <span className="badge text-bg-light rounded-pill">
                                 {cantidadProductos}
                             </span>
                         </Link>
-
-                        {/* Renderizado condicional según si hay sesión iniciada */}
-                        {sesion ? (
-                            <div className="dropdown">
-                                <button
-                                    className="btn btn-outline-light btn-sm dropdown-toggle d-flex align-items-center gap-1"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
-                                    👤 {sesion.nombre}
-                                </button>
-                                <ul className="dropdown-menu dropdown-menu-end shadow">
-                                    {(sesion.rol === "administrador" || sesion.rol === "vendedor") && (
-                                        <li>
-                                            <Link className="dropdown-item" to="/admin">
-                                                ⚙️ Panel Admin
-                                            </Link>
-                                        </li>
-                                    )}
-                                    <li>
-                                        <button
-                                            className="dropdown-item text-danger"
-                                            onClick={handleCerrarSesion}
-                                        >
-                                            🚪 Cerrar Sesión
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        ) : (
-                            <>
-                                <Link to="/login" className="btn btn-outline-light btn-sm">
-                                    Iniciar Sesión
-                                </Link>
-
-                                <Link
-                                    to="/registro"
-                                    className="btn btn-warning btn-sm fw-bold"
-                                >
-                                    Crear Cuenta
-                                </Link>
-                            </>
-                        )}
 
                     </div>
                 </div>

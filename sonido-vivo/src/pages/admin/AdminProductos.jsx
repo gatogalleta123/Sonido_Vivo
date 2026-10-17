@@ -6,6 +6,8 @@ import {
     eliminarProducto,
     obtenerCategorias,
 } from "../../data/productos.js";
+import ToastPopup from "../../components/ToastPopup.jsx";
+import { validarTexto, validarUrl } from "../../utils/validaciones.js";
 
 export default function AdminProductos() {
     const [productos, setProductos] = useState([]);
@@ -82,19 +84,40 @@ export default function AdminProductos() {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: name === "stock" || name === "stockCritico" || name === "precio" ? Number(value) : value,
+            [name]: value,
         }));
     };
 
     // Validaciones del Formulario
     const validarFormulario = () => {
         const errores = {};
-        if (!formData.codigo.trim()) errores.codigo = "El código es obligatorio.";
-        if (!formData.nombre.trim()) errores.nombre = "El nombre es obligatorio.";
-        if (!formData.marca.trim()) errores.marca = "La marca es obligatoria.";
-        if (!formData.modelo.trim()) errores.modelo = "El modelo es obligatorio.";
-        if (formData.precio <= 0) errores.precio = "El precio debe ser mayor a 0.";
-        if (formData.stock < 0) errores.stock = "El stock no puede ser negativo.";
+        if (!/^[A-Z0-9_-]{2,20}$/.test(formData.codigo.trim().toUpperCase())) {
+            errores.codigo = "Usa entre 2 y 20 letras, números, guiones o guiones bajos.";
+        }
+        if (!categorias.includes(formData.categoria)) errores.categoria = "Selecciona una categoría válida.";
+        if (!validarTexto(formData.nombre, 2)) errores.nombre = "El nombre debe tener al menos 2 caracteres.";
+        if (!validarTexto(formData.marca, 2)) errores.marca = "La marca debe tener al menos 2 caracteres.";
+        if (!validarTexto(formData.modelo, 1)) errores.modelo = "El modelo es obligatorio.";
+
+        const precio = Number(formData.precio);
+        if (!String(formData.precio).trim() || !Number.isInteger(precio) || precio <= 0) {
+            errores.precio = "Ingresa un precio entero válido mayor a 0.";
+        }
+
+        ["stock", "stockCritico"].forEach((campo) => {
+            const valor = Number(formData[campo]);
+            if (
+                !String(formData[campo]).trim() ||
+                !Number.isInteger(valor) ||
+                valor < 0
+            ) {
+                errores[campo] = "Ingresa un número entero igual o mayor a 0.";
+            }
+        });
+
+        if (formData.imagen.trim() && !validarUrl(formData.imagen)) {
+            errores.imagen = "Ingresa una URL de imagen válida (http o https).";
+        }
 
         setErroresForm(errores);
         return Object.keys(errores).length === 0;
@@ -106,19 +129,31 @@ export default function AdminProductos() {
         if (!validarFormulario()) return;
 
         try {
+            const producto = {
+                ...formData,
+                codigo: formData.codigo.trim().toUpperCase(),
+                nombre: formData.nombre.trim(),
+                marca: formData.marca.trim(),
+                modelo: formData.modelo.trim(),
+                descripcion: formData.descripcion.trim(),
+                imagen: formData.imagen.trim(),
+                precio: Number(formData.precio),
+                stock: Number(formData.stock),
+                stockCritico: Number(formData.stockCritico),
+            };
+
             if (modoEdicion) {
-                actualizarProducto(formData.codigo, formData);
-                setMensaje({ tipo: "success", texto: `Producto ${formData.codigo} actualizado correctamente.` });
+                actualizarProducto(producto.codigo, producto);
+                setMensaje({ tipo: "success", texto: `Producto ${producto.codigo} actualizado correctamente.` });
             } else {
-                crearProducto(formData);
-                setMensaje({ tipo: "success", texto: `Producto ${formData.codigo} creado exitosamente.` });
+                crearProducto(producto);
+                setMensaje({ tipo: "success", texto: `Producto ${producto.codigo} creado exitosamente.` });
             }
 
             cargarDatos();
             setMostrarModal(false);
-            setTimeout(() => setMensaje(null), 3000);
         } catch (err) {
-            setMensaje({ tipo: "danger", texto: err.message });
+            setMensaje({ tipo: "danger", texto: err.message || "No se pudo guardar el producto." });
         }
     };
 
@@ -128,7 +163,6 @@ export default function AdminProductos() {
             eliminarProducto(codigo);
             cargarDatos();
             setMensaje({ tipo: "warning", texto: `Producto ${codigo} eliminado.` });
-            setTimeout(() => setMensaje(null), 3000);
         }
     };
 
@@ -148,13 +182,11 @@ export default function AdminProductos() {
                 </button>
             </div>
 
-            {/* Alerta de notificación */}
-            {mensaje && (
-                <div className={`alert alert-${mensaje.tipo} alert-dismissible fade show shadow-sm`} role="alert">
-                    {mensaje.texto}
-                    <button type="button" className="btn-close" onClick={() => setMensaje(null)}></button>
-                </div>
-            )}
+            <ToastPopup
+                mensaje={mensaje?.texto}
+                tipo={mensaje?.tipo}
+                onClose={() => setMensaje(null)}
+            />
 
             {/* Filtros y Búsqueda */}
             <div className="card shadow-sm border-0 bg-white p-3 mb-4">
@@ -231,7 +263,7 @@ export default function AdminProductos() {
                                                 <td><span className="badge bg-light text-dark border">{p.categoria}</span></td>
                                                 <td className="small text-muted">{p.marca} {p.modelo}</td>
                                                 <td className="text-end fw-bold text-success">
-                                                    \${p.precio.toLocaleString("es-CL")}
+                                                    {"$"}{p.precio.toLocaleString("es-CL")}
                                                 </td>
                                                 <td className="text-center">
                                                     <span className={`badge ${esCritico ? "bg-danger" : "bg-success"}`}>
@@ -312,7 +344,7 @@ export default function AdminProductos() {
                                         <div className="col-md-4">
                                             <label className="form-label small fw-bold">Categoría *</label>
                                             <select
-                                                className="form-select"
+                                                className={`form-select ${erroresForm.categoria ? "is-invalid" : ""}`}
                                                 name="categoria"
                                                 value={formData.categoria}
                                                 onChange={handleChange}
@@ -328,6 +360,7 @@ export default function AdminProductos() {
                                                 <option value="Accesorios">Accesorios</option>
                                                 <option value="Estudio y Grabación">Estudio y Grabación</option>
                                             </select>
+                                            {erroresForm.categoria && <div className="invalid-feedback">{erroresForm.categoria}</div>}
                                         </div>
 
                                         {/* Precio */}
@@ -393,6 +426,8 @@ export default function AdminProductos() {
                                                 className={`form-control ${erroresForm.stock ? "is-invalid" : ""}`}
                                                 name="stock"
                                                 value={formData.stock}
+                                                min="0"
+                                                step="1"
                                                 onChange={handleChange}
                                             />
                                             {erroresForm.stock && <div className="invalid-feedback">{erroresForm.stock}</div>}
@@ -403,11 +438,14 @@ export default function AdminProductos() {
                                             <label className="form-label small fw-bold">Stock Crítico (Mínimo) *</label>
                                             <input
                                                 type="number"
-                                                className="form-control"
+                                                className={`form-control ${erroresForm.stockCritico ? "is-invalid" : ""}`}
                                                 name="stockCritico"
                                                 value={formData.stockCritico}
+                                                min="0"
+                                                step="1"
                                                 onChange={handleChange}
                                             />
+                                            {erroresForm.stockCritico && <div className="invalid-feedback">{erroresForm.stockCritico}</div>}
                                         </div>
 
                                         {/* URL Imagen */}
@@ -415,12 +453,13 @@ export default function AdminProductos() {
                                             <label className="form-label small fw-bold">URL de la Imagen</label>
                                             <input
                                                 type="url"
-                                                className="form-control"
+                                                className={`form-control ${erroresForm.imagen ? "is-invalid" : ""}`}
                                                 name="imagen"
                                                 value={formData.imagen}
                                                 onChange={handleChange}
                                                 placeholder="https://images.unsplash.com/..."
                                             />
+                                            {erroresForm.imagen && <div className="invalid-feedback">{erroresForm.imagen}</div>}
                                         </div>
 
                                         {/* Descripción */}

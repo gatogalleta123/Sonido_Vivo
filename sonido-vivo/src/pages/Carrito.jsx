@@ -6,6 +6,7 @@ import {
     eliminarDelCarritoStorage,
     vaciarCarritoStorage,
 } from "../utils/carritoStorage.js";
+import ToastPopup from "../components/ToastPopup.jsx";
 
 export default function Carrito() {
     const navigate = useNavigate();
@@ -70,11 +71,17 @@ export default function Carrito() {
 
     return (
         <div className="carrito-container">
+            <ToastPopup
+                mensaje={mensajeCupon?.texto}
+                tipo={mensajeCupon?.tipo}
+                onClose={() => setMensajeCupon(null)}
+            />
 
             {/* Encabezado */}
             <div className="bg-white p-4 rounded-3 shadow-sm mb-4 border">
                 <h1 className="fw-bold mb-1" style={{ color: "var(--color-purpura-profundo)" }}>
-                    🛒 Carrito de Compras
+                    <i className="bi bi-cart3 me-2" aria-hidden="true"></i>
+                    Carrito de Compras
                 </h1>
                 <p className="text-muted m-0">
                     Revisa el detalle de tus instrumentos y equipos antes de continuar con la compra.
@@ -212,11 +219,6 @@ export default function Carrito() {
                                             Aplicar
                                         </button>
                                     </div>
-                                    {mensajeCupon && (
-                                        <div className={`form-text text-${mensajeCupon.tipo} fw-bold mt-1`}>
-                                            {mensajeCupon.texto}
-                                        </div>
-                                    )}
                                 </form>
 
                                 <hr />
@@ -266,7 +268,7 @@ export default function Carrito() {
             ) : (
                 /* Estado Vacío */
                 <div className="text-center py-5 bg-white rounded-3 shadow-sm border mb-5">
-                    <span className="fs-1">🛒</span>
+                    <i className="bi bi-cart-x fs-1" aria-hidden="true"></i>
                     <h3 className="fw-bold mt-3">Tu carrito está vacío</h3>
                     <p className="text-muted">
                         Aún no has agregado instrumentos o accesorios a tu orden de compra.
