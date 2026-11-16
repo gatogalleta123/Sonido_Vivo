@@ -1,18 +1,25 @@
-# Sonido_Vivo
-Proyecto de evaluación 2 de Desarrollo Fulstack
+# Sonido Vivo Principal
 
-## Sonido Vivo
+Estructura del proyecto:
 
-Aplicación web de tienda musical construida con React y Vite.
+```text
+Sonido_Vivo_Principal/
+├── frontend/  Aplicación web React y Vite
+├── backend/   Espacio para el futuro backend
+└── bd/        Espacio para la futura base de datos
+```
 
-### Desarrollo
+## Desarrollo del frontend
 
 ```sh
+cd frontend
 npm install
 npm run dev
 ```
 
-### Validación
+## Validación
+
+Ejecuta estos comandos desde `frontend/`:
 
 ```sh
 npm test
